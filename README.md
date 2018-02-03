@@ -1,1 +1,1 @@
-# CIS452_prog2
+# CIS452_proj2
