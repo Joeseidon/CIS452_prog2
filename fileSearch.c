@@ -35,6 +35,10 @@ int main(int argc, char *argv[]){
 	/* Assign Signal Handler For Exit */ 
     signal(SIGUSR1, exitHandler);
 	
+	//expect two cmd args for pipe 
+	dup2(atoi(argv[1]),fileno(stdout));
+	dup2(atoi(argv[2]),fileno(stdin));
+	
 	while(remain_active){
 		//Wait for fileName from Parent on downstream pipe
 		waitForInstructions();
