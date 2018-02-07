@@ -13,23 +13,45 @@ This program ...
 #include <time.h>
 
 /*Global Defines*/
+#define MAX_CHILDREN 10
 
 /*Function Prototypes*/
 
 /*Global Variables*/
+FILE* collection;
+char *searchFiles[MAX_CHILDREN];
+char *collection_filename;
 int childProcessesCreated = 0;
+int numProcessesNeeded = 0;
+int pvc[MAX_CHILDREN][2];
+
 
 void main(int argc, char *argv[]){
 	
 	//prompt user for file which contains the files names to search
+	do{
+		fprintf(stdout, "Enter collection file name: ");
+		fscanf(stdin, "%s\n",collection_filename);
+		collection = fopen(collection_filename,"r");
+	}while(collection == NULL);
 	
-	
-	//read file which holds file names to search
+	//read file which holds file names to search (max 10 files)
+	int i=0;
+	while(fgets(searchFiles[i],MAX_CHAR_COUNT, collection)!= NULL && i<MAX_CHILDREN){
+		i++;
+	}
 	
 	//determine number of children 
+	numProcessesNeeded=i;
 	
 	//define pipes
+	for(i=0; i<numProcessesNeeded; i++){
+		pipe(pvc[i]);
+	}
+	
+	while(1){
 		
+	}
 	
 	//while (files left in list)
 		//read in name 

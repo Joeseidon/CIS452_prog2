@@ -22,32 +22,37 @@ int wordSearch(char *word);
 char *strlwr(char *str);
 void flush(void);
 void waitForInstructions(void);
+void reportFindings(void);
 
 /*Global Variables*/
 int numberOfMatches = 0;
 int searchComplete = 0;
-char *filename, *searchWord, parentMSG[CHAR_BUFFER_LENGTH],*token2;
+int remain_active=1;
+char *filename, *searchWord, parentMSG[CHAR_BUFFER_LENGTH];
 FILE *target;
 
 int main(int argc, char *argv[]){
 	/* Assign Signal Handler For Exit */ 
     signal(SIGUSR1, exitHandler);
 	
-	while(1){
+	while(remain_active){
 		//Wait for fileName from Parent on downstream pipe
 		waitForInstructions();
 		//On filename receive start search 
 		numberOfMatches=wordSearch(searchWord);
 		//following search report results on upstream pipe
-		fprintf(stdout, "%d",numberOfMatches);
-		break;
+		reportFindings();
 	}
 	return 0;
+}
+void reportFindings(void){
+	fprintf(stdout, "%d",numberOfMatches);
 }
 void waitForInstructions(void){
 	int i;
 	fscanf(stdin, "%256[^\n]", parentMSG);
 	flush();
+	char *token2;
 	
 	i=0;
 	token2 = strtok(parentMSG, ",");
@@ -60,8 +65,8 @@ void waitForInstructions(void){
 		token2 = strtok(NULL, " ");
 		i++;
 	}
-		
-	printf("Filename: %s  SearchWord: %s",filename,searchWord);
+	/*debugging*/
+	//printf("Filename: %s  SearchWord: %s",filename,searchWord);
 }
 void flush(void)
 {
@@ -106,5 +111,6 @@ void exitHandler(int sigNum){
 	//Clean Up if needed 
 	
 	fprintf(stdout,"Exiting Child: %d\n",getpid());
-	exit(0);
+	
+	remain_active=0; //exits main while loop
 }
