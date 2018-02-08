@@ -11,15 +11,17 @@ This program ...
 #include <signal.h>
 #include <string.h>
 #include <time.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/time.h>
+#include <sys/resource.h>
 
 /*Global Defines*/
 #define MAX_CHILDREN 10
 #define CHAR_BUFFER_LENGTH 256
 
 /*Function Prototypes*/
-void exitHandler(int sigNum);
-int wordSearch(char *word);
-
+void flush(void);
 /*Global Variables*/
 FILE* collection;
 char *searchFiles[MAX_CHILDREN];
@@ -31,18 +33,19 @@ int remain_active = 1;
 
 
 
-void main(int argc, char *argv[]){
+int main(int argc, char *argv[]){
 	
 	//prompt user for file which contains the files names to search
 	do{
 		fprintf(stdout, "Enter collection file name: ");
 		fscanf(stdin, "%s\n",collection_filename);
 		collection = fopen(collection_filename,"r");
+		flush();
 	}while(collection == NULL);
 	
 	//read file which holds file names to search (max 10 files)
 	int i=0;
-	while(fgets(searchFiles[i],MAX_CHAR_COUNT, collection)!= NULL && i<MAX_CHILDREN){
+	while(fgets(searchFiles[i],CHAR_BUFFER_LENGTH, collection)!= NULL && i<MAX_CHILDREN){
 		i++;
 	}
 	//close file collection
@@ -56,7 +59,8 @@ void main(int argc, char *argv[]){
 	
 	//define pipes
 	for(i=0; i<numProcessesNeeded; i++){
-		pipe(pvc[i]);
+		pipe(pvc[i][0]);
+		pipe(pvc[i][1]);
 	}
 	
 	while(main_run){
@@ -74,16 +78,16 @@ void main(int argc, char *argv[]){
 			
 			if ((pids[i] = fork()) < 0) {
 				perror("fork");
-				abort();
+				
 			} else if (pids[i] == 0) {
 				//Child Process
 
 				//set up child side of pipe[i]
 				close(pvc[i][0][0]);	//Child out parent in
 				close(pvc[i][1][1]);	//Parent out Child in
-				char upstream[MAX_CHAR_COUNT],downstream[MAX_CHAR_COUNT];
-				sprintf(upstream,"%s",pvc[i][0][1]);
-				sprintf(downstream,"%s",pvc[i][1][0]);
+				char upstream[CHAR_BUFFER_LENGTH],downstream[CHAR_BUFFER_LENGTH];
+				sprintf(upstream,"%d",pvc[i][0][1]);
+				sprintf(downstream,"%d",pvc[i][1][0]);
 				
 				char *cmd[4]={"fileSearch",upstream,downstream,NULL};
 				
@@ -92,6 +96,7 @@ void main(int argc, char *argv[]){
 					perror("exec failed");
 					exit(7);
 				}
+			}
 		}
 		
 		printf("Parent Thread: Work Space Reached\n");
@@ -104,8 +109,11 @@ void main(int argc, char *argv[]){
 	pid_t childPid;
 	for(i=0; i<numProcessesNeeded; i++){
 		process_active[i]=0; //cancel child process loop
+		/*Signal Child Process to Abort*/
+		
+		/*Wait for process to return*/
 		childPid = wait(&status);
-		printf("Child %ld, exited with status = %d.\n", (long)pid, WEXITSTATUS(status));
+		printf("Child %ld, exited with status = %d.\n", (long)childPid, WEXITSTATUS(status));
 	}
 	
 	//while (files left in list)
@@ -133,34 +141,12 @@ void main(int argc, char *argv[]){
 			
 			//loop until user quit //if prompt value is non-alphabetical close children then parent
 			
-	return;
+	return 0;
 }
-
-int wordSearch(char *word){
-	int word_count = 0; //num of target word found
-	char line[CHAR_BUFFER_LENGTH];
-	char *token;
-	
-	target = fopen (filename,"r" );
-	
-	//confirm file is valid 
-	if(target == NULL)
-		return 0;
-	
-	//read line from file
-	while(fgets(line, sizeof(line),target) != NULL){		
-		token = strtok(line, " ");
-		while(token != NULL){
-			//compare tokens to search value
-			if(strstr(token,word))
-				word_count++;
-			token = strtok(NULL, " ");
-		}		
-	}	
-	return word_count;
+void flush(void)
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF)
+        ;
 }
-
-void exitHandler(int sigNum){
-	//Clean Up if needed	
-	remain_active=0; //exits main while loop
-}
+//File END
