@@ -201,6 +201,9 @@ int main(int argc, char *argv[]){
 }
 void waitForInstructions(void){
 	int i;
+	dup2(0,fileno(stdout));
+	dup2(1,fileno(stdin));
+	printf("Enter Search String: ");
 	fscanf(stdin, "%256[^\n]", searchString);
 	flush();
 	
