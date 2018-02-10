@@ -121,9 +121,9 @@ int main(int argc, char *argv[]){
 				//Child Process
 				printf("Child %i created.\n",i);
 				
-				while(1){
-					;/*Infinit loop for testing*/
-				}
+				// while(1){
+					// ;/*Infinit loop for testing*/
+				// }
 				
 				//call exec passing upstream pipe and downstream pipe as args
 				if (execvp(cmd[0],cmd) < 0) {
