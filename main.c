@@ -154,12 +154,13 @@ int main(int argc, char *argv[]){
 				 //fprintf(stdout,"%s",strcat(strcat(tmp,","),searchString));
 				 write(fileno(stdout),tmp,sizeof(tmp));
 			 }
-			// /* Get search responses from pipes */
-			// for(j=0; j<numProcessesNeeded; j++){
-				// int count=0;
-				// dup2(pvc[j][1][0],fileno(stdin));
-				// fscanf(stdin,"%i",&count);
-			// }
+			/* Get search responses from pipes */
+			for(j=0; j<numProcessesNeeded; j++){
+				int count=0;
+				dup2(pvc[j][1][0],fileno(stdin));
+				//fscanf(stdin,"%i",&count);
+				read(fileno(stdin),&count,sizeof(int));
+			}
 		}
 	}
 	
