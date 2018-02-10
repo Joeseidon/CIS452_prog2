@@ -154,7 +154,7 @@ int main(int argc, char *argv[]){
 				 strcpy(tmp,strcat(strcat(tmp,","),searchString));
 				 printf("Sending data(%s) to process %i\n",tmp,j);
 				 //fprintf(stdout,"%s",strcat(strcat(tmp,","),searchString));
-				 write(pvc[j][0][1],tmp,sizeof(tmp));
+				 write(pvc[j][0][1],searchString,sizeof(searchString));
 			 }
 			/* Get search responses from pipes */
 			for(j=0; j<numProcessesNeeded; j++){

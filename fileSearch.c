@@ -39,6 +39,12 @@ int main(int argc, char *argv[]){
 	//expect two cmd args for pipe 
 	dup2(atoi(argv[1]),fileno(stdout));
 	dup2(atoi(argv[2]),fileno(stdin));
+	
+	/*Remove trailing '\n' if it exists*/
+	if(argv[3][strlen(argv[3])-1]=='\n'){
+		argv[3][strlen(argv[3])-1] = '\0';
+	}
+	strcpy(filename,argv[3]);
 	int ready=7;
 	while(remain_active){
 		//printf("Ready\n");
@@ -65,8 +71,12 @@ void waitForInstructions(void){
 	//fgets(parentMSG,CHAR_BUFFER_LENGTH,stdin);
 	//flush();
 	//printf("Received: %s\n",parentMSG);
+	
 	read(fileno(stdin),parentMSG,sizeof(parentMSG));
-	char *token2;
+	
+	strcpy(searchWord,parentMSG);
+	
+	/*char *token2;
 	i=0;
 	token2 = strtok(parentMSG, ",");
 	while(token2 != NULL){
@@ -77,7 +87,7 @@ void waitForInstructions(void){
 			searchWord = token2;
 		token2 = strtok(NULL, " ");
 		i++;
-	}
+	}*/
 	/*debugging*/
 	//printf("Filename: %s  SearchWord: %s",filename,searchWord);
 }
