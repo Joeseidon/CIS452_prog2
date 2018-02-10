@@ -40,12 +40,13 @@ int main(int argc, char *argv[]){
 	//prompt user for file which contains the files names to search
 	do{
 		fprintf(stdout, "Enter collection file name: ");
+		fflush(stdout);
 		//fscanf(stdin, "%s\n",collection_filename);
 		fgets(collection_filename, sizeof(collection_filename),stdin);
 		/*printf("Source File: %s\n   Length: %i",collection_filename,strlen(collection_filename));*/
-		/*collection_filename[strlen(collection_filename)-1]='\0';*/
+		collection_filename[strlen(collection_filename)-1]='\0';
 		collection = fopen(collection_filename,"r");
-		flush();
+		//flush();
 	}while(collection == NULL);
 
 	printf("File Found and Opened\n");
