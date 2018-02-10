@@ -30,6 +30,7 @@ int childProcessesCreated = 0;
 int numProcessesNeeded = 0;
 int main_run = 1;
 int remain_active = 1;
+int debug = 1;
 
 
 
@@ -62,6 +63,9 @@ int main(int argc, char *argv[]){
 		pipe(pvc[i][0]);
 		pipe(pvc[i][1]);
 	}
+	
+	if(debug)
+		printf("Created %i X 2 Pipes\n",numProcessesNeeded);
 	
 	while(main_run){
 		pid_t pids[10];
