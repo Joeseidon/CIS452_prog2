@@ -64,7 +64,7 @@ int main(int argc, char *argv[]){
 	//int pvc[numProcessesNeeded][2][2];
 	//int process_active[numProcessesNeeded];
 	
-	prinf("Found %i files to search in collection",i);
+	printf("Found %i files to search in collection",i);
 	//define pipes
 	for(i=0; i<numProcessesNeeded; i++){
 		pipe(pvc[i][0]);
