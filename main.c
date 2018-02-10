@@ -70,7 +70,7 @@ int main(int argc, char *argv[]){
 	printf("Collection closed.\n");
 	
 	//determine number of children 
-	numProcessesNeeded=i-1;
+	numProcessesNeeded=i;
 	
 	/* MOVED TO GLOBAL FOR NOW. NEEDS DYNAMIC MEMEORY ALLOCATION*/
 		/*ANYTHING WITH numProcessesNeeded should be dynamicly allocated not globally declared */
@@ -78,13 +78,14 @@ int main(int argc, char *argv[]){
 	//int process_active[numProcessesNeeded];
 	
 	printf("Found %i files to search in collection\n",numProcessesNeeded);
-	sleep(1000);
+	
 	//define pipes
 	for(i=0; i<numProcessesNeeded; i++){
+		printf("Up and Down stream pipes %i created.\n",i);
 		pipe(pvc[i][0]);
 		pipe(pvc[i][1]);
 	}
-	
+	sleep(1000);
 	if(debug)
 		printf("Created %i X 2 Pipes\n",numProcessesNeeded);
 	
