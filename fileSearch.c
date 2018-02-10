@@ -56,7 +56,8 @@ int main(int argc, char *argv[]){
 	return 0;
 }
 void reportFindings(void){
-	fprintf(stdout, "%d",numberOfMatches);
+	//fprintf(stdout, "%d",numberOfMatches);
+	write(fileno(stdout),&numberOfMatches,sizeof(int));
 }
 void waitForInstructions(void){
 	int i;

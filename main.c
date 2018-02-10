@@ -235,6 +235,7 @@ void waitForInstructions(void){
 	}
 }
 void exitHandler(int sigNum){
+	dup2(0,fileno(stdout));
 	printf("Exit handler reached\n");
 	
 	//wait for children
