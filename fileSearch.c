@@ -94,7 +94,7 @@ int wordSearch(char *word){
 		token = strtok(line, " ");
 		while(token != NULL){
 			//compare tokens to search value
-			if(strstr(token,word))
+			if(strcmp(token,word) == 0)
 				word_count++;
 			token = strtok(NULL, " ");
 		}		

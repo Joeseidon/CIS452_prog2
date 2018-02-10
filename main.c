@@ -40,6 +40,7 @@ int main(int argc, char *argv[]){
 	do{
 		fprintf(stdout, "Enter collection file name: ");
 		fscanf(stdin, "%s\n",collection_filename);
+		printf("Source File: %s\n",collection_filename);
 		collection = fopen(collection_filename,"r");
 		flush();
 	}while(collection == NULL);
