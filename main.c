@@ -123,10 +123,6 @@ int main(int argc, char *argv[]){
 				//Child Process
 				printf("Child %i created.\n",i);
 				
-				// while(1){
-					// ;/*Infinit loop for testing*/
-				// }
-				
 				//call exec passing upstream pipe and downstream pipe as args
 				if (execvp(cmd[0],cmd) < 0) {
 					perror("exec failed");
@@ -144,11 +140,11 @@ int main(int argc, char *argv[]){
 			/* Wait for search string */
 			waitForInstructions();
 			/* pass search string to child processes with search string */
-			// int j = 0;
-			// for(j=0; j<numProcessesNeeded; j++){
-				// dup2(pvc[j][0][1],fileno(stdout));
-				// fprintf(stdout,"%s",strcat(searchFiles[i],searchString));
-			// }
+			 int j = 0;
+			 for(j=0; j<numProcessesNeeded; j++){
+				 dup2(pvc[j][0][1],fileno(stdout));
+				 fprintf(stdout,"%s",strcat(searchFiles[i],searchString));
+			 }
 			// /* Get search responses from pipes */
 			// for(j=0; j<numProcessesNeeded; j++){
 				// int count=0;
@@ -212,21 +208,6 @@ void waitForInstructions(void){
 	if(searchString[strlen(searchString)-1]=='\n'){
 		searchString[strlen(searchString)-1] = '\0';
 	}
-	/*char *token2;
-	
-	i=0;
-	token2 = strtok(parentMSG, ",");
-	while(token2 != NULL){
-		//compare tokens to search value
-		if(i==0)
-			filename = token2;
-		else
-			searchWord = token2;
-		token2 = strtok(NULL, " ");
-		i++;
-	}*/
-	/*debugging*/
-	//printf("Filename: %s  SearchWord: %s",filename,searchWord);
 }
 void exitHandler(int sigNum){
 	printf("Exit handler reached\n");

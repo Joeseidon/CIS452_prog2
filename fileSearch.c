@@ -36,7 +36,7 @@ int main(int argc, char *argv[]){
     signal(SIGUSR1, exitHandler);
 	printf("Search Instance Created:\n");
 	//expect two cmd args for pipe 
-	dup2(atoi(argv[1]),fileno(stdout));
+	//dup2(atoi(argv[1]),fileno(stdout));
 	dup2(atoi(argv[2]),fileno(stdin));
 	
 	while(remain_active){
@@ -56,6 +56,7 @@ void waitForInstructions(void){
 	int i;
 	fscanf(stdin, "%256[^\n]", parentMSG);
 	flush();
+	printf("Received: %s\n",parentMSG);
 	char *token2;
 	i=0;
 	token2 = strtok(parentMSG, ",");
