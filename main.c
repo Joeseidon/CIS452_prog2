@@ -121,6 +121,8 @@ int main(int argc, char *argv[]){
 			}
 			else if (pids[i] == 0) 
 			{
+				dup2(pvc[i][1][1],fileno(stdout));
+				dup2(pvc[i][0][0],fileno(stdin));
 				//Child Process
 				printf("Child %i created.\n",i);
 				
@@ -139,7 +141,7 @@ int main(int argc, char *argv[]){
 		
 		while(main_run){
 			/* Wait for child processes to signal waiting */
-			waitForChildProcesses();
+			//waitForChildProcesses();
 			/* Wait for search string */
 			waitForInstructions();
 			/* pass search string to child processes with search string */
