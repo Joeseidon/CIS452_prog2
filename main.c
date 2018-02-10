@@ -23,10 +23,12 @@ This program ...
 /*Function Prototypes*/
 void flush(void);
 void exitHandler(int sigNum);
+void waitForInstructions(void);
 /*Global Variables*/
 FILE* collection;
 char searchFiles[MAX_CHILDREN][CHAR_BUFFER_LENGTH];
 char collection_filename[CHAR_BUFFER_LENGTH];
+char searchString[CHAR_BUFFER_LENGTH];
 int childProcessesCreated = 0;
 int numProcessesNeeded = 0;
 int main_run = 1;
@@ -95,16 +97,16 @@ int main(int argc, char *argv[]){
 		for (i = 0; i < numProcessesNeeded; i++) 
 		{
 			//set up parent side of pipe[i]
-			close(pvc[i][0][1]);	//Child out parent in
-			close(pvc[i][1][0]);	//Parent out Child in
+			//close(pvc[i][0][0]);	//Child out parent in
+			//close(pvc[i][1][1]);	//Parent out Child in
 			
 			
-			//set up child side of pipe[i]
-			close(pvc[i][0][0]);	//Child out parent in
-			close(pvc[i][1][1]);	//Parent out Child in
+			// //set up child side of pipe[i]
+			// close(pvc[i][0][0]);	//Child out parent in
+			// close(pvc[i][1][1]);	//Parent out Child in
 			char upstream[CHAR_BUFFER_LENGTH],downstream[CHAR_BUFFER_LENGTH];
-			sprintf(upstream,"%d",pvc[i][0][1]);
-			sprintf(downstream,"%d",pvc[i][1][0]);
+			sprintf(upstream,"%d",pvc[i][1][0]);
+			sprintf(downstream,"%d",pvc[i][0][1]);
 			
 			char *cmd[4]={"fileSearch",upstream,downstream,NULL};
 			
@@ -139,7 +141,18 @@ int main(int argc, char *argv[]){
 		signal (SIGINT, exitHandler);
 		
 		while(main_run){
-			; /* infinit loop for testing*/
+			/* Wait for search string */
+			waitForInstructions();
+			/* pass search string to child processes with search string */
+			int j = 0;
+			for(j=0; j<numProcessesNeeded; j++){
+				fprintf(pvc[j][0][1]),"%s",strcat(searchFiles[i],searchString));
+			}
+			/* Get search responses from pipes */
+			for(j=0; j<numProcessesNeeded; j++){
+				int count=0;
+				fscanf(pvc[j][1][0]),"%i",&count);
+			}
 		}
 	}
 	
@@ -184,7 +197,31 @@ int main(int argc, char *argv[]){
 			
 	return 0;
 }
-
+void waitForInstructions(void){
+	int i;
+	fscanf(stdin, "%256[^\n]", searchString);
+	flush();
+	
+	/*Remove trailing '\n' if it exists*/
+	if(searchString[strlen(searchString)-1]=='\n'){
+		searchString[strlen(searchString)-1] = '\0';
+	}
+	/*char *token2;
+	
+	i=0;
+	token2 = strtok(parentMSG, ",");
+	while(token2 != NULL){
+		//compare tokens to search value
+		if(i==0)
+			filename = token2;
+		else
+			searchWord = token2;
+		token2 = strtok(NULL, " ");
+		i++;
+	}*/
+	/*debugging*/
+	//printf("Filename: %s  SearchWord: %s",filename,searchWord);
+}
 void exitHandler(int sigNum){
 	printf("Exit handler reached\n");
 	
