@@ -54,8 +54,8 @@ int main(int argc, char *argv[]){
 	while(fgets(searchFiles[i],CHAR_BUFFER_LENGTH, collection)!= NULL && i<MAX_CHILDREN){
 		printf("Found: %s\n",searchFiles[i]);
 		/*Remove trailing '\n' if it exists*/
-		if(searchFile[i][strlen(searchFile[i])-1]=='\n'){
-			searchFile[i][strlen(searchFile[i])-1] = '\0';
+		if(searchFiles[i][strlen(searchFiles[i])-1]=='\n'){
+			searchFiles[i][strlen(searchFiles[i])-1] = '\0';
 		}
 		i++;
 	}
