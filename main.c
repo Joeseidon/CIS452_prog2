@@ -199,7 +199,7 @@ void exitHandler(int sigNum){
 		childPid = wait(&status);
 		printf("Child %ld, exited with status = %d.\n", (long)childPid, WEXITSTATUS(status));
 	}
-	main_run = false;
+	main_run = 0;
 	return;
 }
 void flush(void)
