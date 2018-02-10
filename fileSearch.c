@@ -41,10 +41,11 @@ int main(int argc, char *argv[]){
 	dup2(atoi(argv[2]),fileno(stdin));
 	int ready=7;
 	while(remain_active){
-		printf("Ready\n");
+		// printf("Ready\n");
 		//Signal ready status to parent
-		fprintf(stdout,"%i",ready);
-		flush();
+		// fprintf(stdout,"%i",ready);
+		// flush();
+		write(fileno(stdout),&ready,sizeof(ready));
 		//Wait for fileName from Parent on downstream pipe
 		waitForInstructions();
 		//On filename receive start search 
