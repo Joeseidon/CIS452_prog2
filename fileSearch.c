@@ -57,7 +57,6 @@ void waitForInstructions(void){
 	fscanf(stdin, "%256[^\n]", parentMSG);
 	flush();
 	char *token2;
-	printf("Instruction recieved: %s",parentMSG);
 	i=0;
 	token2 = strtok(parentMSG, ",");
 	while(token2 != NULL){

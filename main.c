@@ -105,8 +105,8 @@ int main(int argc, char *argv[]){
 			// close(pvc[i][0][0]);	//Child out parent in
 			// close(pvc[i][1][1]);	//Parent out Child in
 			char upstream[CHAR_BUFFER_LENGTH],downstream[CHAR_BUFFER_LENGTH];
-			sprintf(upstream,"%d",pvc[i][1][0]);
-			sprintf(downstream,"%d",pvc[i][0][1]);
+			sprintf(upstream,"%d",pvc[i][1][1]);
+			sprintf(downstream,"%d",pvc[i][0][0]);
 			
 			char *cmd[4]={"fileSearch",upstream,downstream,NULL};
 			
@@ -146,16 +146,14 @@ int main(int argc, char *argv[]){
 			/* pass search string to child processes with search string */
 			int j = 0;
 			for(j=0; j<numProcessesNeeded; j++){
-				FILE *fw = fopen(pvc[j][0][1] , "w");
-				fprintf(fw,"%s",strcat(searchFiles[i],searchString));
-				close(fw);
+				dup2(pipe[j][0][1],fileno(stdout));
+				fprintf(stdout,"%s",strcat(searchFiles[i],searchString));
 			}
 			/* Get search responses from pipes */
 			for(j=0; j<numProcessesNeeded; j++){
 				int count=0;
-				FILE *fr = fopen(pvc[j][1][0] , "r");
-				fscanf(fr,"%i",&count);
-				close(fr);
+				dup2(pipe[j][1][0],fileno(stdin));
+				fscanf(stdin,"%i",&count);
 			}
 		}
 	}
