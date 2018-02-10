@@ -60,7 +60,8 @@ int main(int argc, char *argv[]){
 				searchFiles[i][strlen(searchFiles[i])-1] = '\0';
 			}
 		}else{
-			printf("File Read Issue\n");
+			printf("No files left in collection. Break.\n");
+			break;
 		}
 	}
 	sleep(1000);
