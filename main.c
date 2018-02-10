@@ -41,10 +41,11 @@ int main(int argc, char *argv[]){
 		fprintf(stdout, "Enter collection file name: ");
 		//fscanf(stdin, "%s\n",collection_filename);
 		fgets(collection_filename, sizeof(collection_filename),stdin);
-		printf("Source File: %s\n",collection_filename);
+		printf("Source File: %s\n   Length: %i",collection_filename,strlen(collection_filename));
 		collection = fopen(collection_filename,"r");
 		flush();
 	}while(collection == NULL);
+
 	
 	//read file which holds file names to search (max 10 files)
 	int i=0;
