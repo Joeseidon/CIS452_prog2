@@ -178,7 +178,7 @@ void exitHandler(int sigNum){
 	printf("Exit handler reached\n");
 	
 	//wait for children
-	int status;
+	int status,i;
 	pid_t childPid;
 	for(i=0; i<numProcessesNeeded; i++){
 		process_active[i]=0; //cancel child process loop
