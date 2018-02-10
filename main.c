@@ -22,6 +22,7 @@ This program ...
 
 /*Function Prototypes*/
 void flush(void);
+void exitHandler(int sigNum);
 /*Global Variables*/
 FILE* collection;
 char searchFiles[MAX_CHILDREN][CHAR_BUFFER_LENGTH];
@@ -30,7 +31,7 @@ int childProcessesCreated = 0;
 int numProcessesNeeded = 0;
 int main_run = 1;
 int remain_active = 1;
-int debug = 1;
+
 char *filename;
 int pvc[MAX_CHILDREN][2][2];
 int process_active[MAX_CHILDREN];
@@ -85,9 +86,6 @@ int main(int argc, char *argv[]){
 		pipe(pvc[i][0]);
 		pipe(pvc[i][1]);
 	}
-	sleep(1000);
-	if(debug)
-		printf("Created %i X 2 Pipes\n",numProcessesNeeded);
 	
 	while(main_run){
 		pid_t pids[10];
@@ -102,12 +100,13 @@ int main(int argc, char *argv[]){
 			//Used to control child process
 			process_active[i]=1;
 			
-			/*if ((pids[i] = fork()) < 0) {
-				perror("fork");
+			if((pids[i] = fork()) < 0) {
+				perror("fork error");
 				
-			} else if (pids[i] == 0) {
+			}
+			else if (pids[i] == 0) {
 				//Child Process
-
+				printf("Child %i created.\n",i);
 				//set up child side of pipe[i]
 				close(pvc[i][0][0]);	//Child out parent in
 				close(pvc[i][1][1]);	//Parent out Child in
@@ -116,31 +115,36 @@ int main(int argc, char *argv[]){
 				sprintf(downstream,"%d",pvc[i][1][0]);
 				
 				char *cmd[4]={"fileSearch",upstream,downstream,NULL};
-				
+				while(1){
+					;/*Infinit loop for testing*/
+				}
 				//call exec passing upstream pipe and downstream pipe as args
 				if (execvp(cmd[0],cmd) < 0) {
 					perror("exec failed");
 					exit(7);
 				}
-			}*/
+			}
 		}
+		/*Parent Work Space*/
+		printf("Parent Process: Work Space Reached\n");
 		
-		printf("Parent Thread: Work Space Reached\n");
+		/*Assign close Signal to parent only*/
+		signal (SIGINT, exitHandler);
 	}
 	
 	//signal children to stop
 	
 	//wait for children
-	int status;
-	pid_t childPid;
-	for(i=0; i<numProcessesNeeded; i++){
-		process_active[i]=0; //cancel child process loop
-		/*Signal Child Process to Abort*/
+	// int status;
+	// pid_t childPid;
+	// for(i=0; i<numProcessesNeeded; i++){
+		// process_active[i]=0; //cancel child process loop
+		// /*Signal Child Process to Abort*/
 		
-		/*Wait for process to return*/
-		childPid = wait(&status);
-		printf("Child %ld, exited with status = %d.\n", (long)childPid, WEXITSTATUS(status));
-	}
+		// /*Wait for process to return*/
+		// childPid = wait(&status);
+		// printf("Child %ld, exited with status = %d.\n", (long)childPid, WEXITSTATUS(status));
+	// }
 	
 	//while (files left in list)
 		//read in name 
@@ -168,6 +172,24 @@ int main(int argc, char *argv[]){
 			//loop until user quit //if prompt value is non-alphabetical close children then parent
 			
 	return 0;
+}
+
+void exitHandler(int sigNum){
+	printf("Exit handler reached\n");
+	
+	//wait for children
+	int status;
+	pid_t childPid;
+	for(i=0; i<numProcessesNeeded; i++){
+		process_active[i]=0; //cancel child process loop
+		/*Signal Child Process to Abort*/
+		
+		/*Wait for process to return*/
+		childPid = wait(&status);
+		printf("Child %ld, exited with status = %d.\n", (long)childPid, WEXITSTATUS(status));
+	}
+	
+	return;
 }
 void flush(void)
 {
