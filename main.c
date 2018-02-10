@@ -92,32 +92,39 @@ int main(int argc, char *argv[]){
 		int i;
 
 		/* Create Child Processes */
-		for (i = 0; i < numProcessesNeeded; i++) {
+		for (i = 0; i < numProcessesNeeded; i++) 
+		{
 			//set up parent side of pipe[i]
 			close(pvc[i][0][1]);	//Child out parent in
 			close(pvc[i][1][0]);	//Parent out Child in
 			
+			
+			//set up child side of pipe[i]
+			close(pvc[i][0][0]);	//Child out parent in
+			close(pvc[i][1][1]);	//Parent out Child in
+			char upstream[CHAR_BUFFER_LENGTH],downstream[CHAR_BUFFER_LENGTH];
+			sprintf(upstream,"%d",pvc[i][0][1]);
+			sprintf(downstream,"%d",pvc[i][1][0]);
+			
+			char *cmd[4]={"fileSearch",upstream,downstream,NULL};
+			
 			//Used to control child process
 			process_active[i]=1;
 			
-			if((pids[i] = fork()) < 0) {
+			if((pids[i] = fork()) < 0) 
+			{
 				perror("fork error");
 				
 			}
-			else if (pids[i] == 0) {
+			else if (pids[i] == 0) 
+			{
 				//Child Process
 				printf("Child %i created.\n",i);
-				//set up child side of pipe[i]
-				close(pvc[i][0][0]);	//Child out parent in
-				close(pvc[i][1][1]);	//Parent out Child in
-				char upstream[CHAR_BUFFER_LENGTH],downstream[CHAR_BUFFER_LENGTH];
-				sprintf(upstream,"%d",pvc[i][0][1]);
-				sprintf(downstream,"%d",pvc[i][1][0]);
 				
-				char *cmd[4]={"fileSearch",upstream,downstream,NULL};
 				while(1){
 					;/*Infinit loop for testing*/
 				}
+				
 				//call exec passing upstream pipe and downstream pipe as args
 				if (execvp(cmd[0],cmd) < 0) {
 					perror("exec failed");
@@ -129,7 +136,7 @@ int main(int argc, char *argv[]){
 		printf("Parent Process: Work Space Reached\n");
 		
 		/*Assign close Signal to parent only*/
-		signal (SIGINT, exitHandler);
+		//signal (SIGINT, exitHandler);
 	}
 	
 	//signal children to stop
