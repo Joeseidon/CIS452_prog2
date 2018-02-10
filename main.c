@@ -141,7 +141,7 @@ int main(int argc, char *argv[]){
 			waitForInstructions();
 			/* pass search string to child processes with search string */
 			 int j = 0;
-			 char *tmp;
+			 char tmp[CHAR_BUFFER_LENGTH];
 			 for(j=0; j<numProcessesNeeded; j++){
 				 dup2(pvc[j][0][1],fileno(stdout));
 				 strcpy(tmp,searchFiles[j]);
