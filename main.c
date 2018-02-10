@@ -24,7 +24,7 @@ This program ...
 void flush(void);
 /*Global Variables*/
 FILE* collection;
-char *searchFiles[MAX_CHILDREN];
+char searchFiles[MAX_CHILDREN][CHAR_BUFFER_LENGTH];
 char collection_filename[CHAR_BUFFER_LENGTH];
 int childProcessesCreated = 0;
 int numProcessesNeeded = 0;
