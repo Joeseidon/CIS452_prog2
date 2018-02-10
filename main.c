@@ -98,7 +98,7 @@ int main(int argc, char *argv[]){
 			//Used to control child process
 			process_active[i]=1;
 			
-			if ((pids[i] = fork()) < 0) {
+			/*if ((pids[i] = fork()) < 0) {
 				perror("fork");
 				
 			} else if (pids[i] == 0) {
@@ -118,7 +118,7 @@ int main(int argc, char *argv[]){
 					perror("exec failed");
 					exit(7);
 				}
-			}
+			}*/
 		}
 		
 		printf("Parent Thread: Work Space Reached\n");
