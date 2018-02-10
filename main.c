@@ -200,7 +200,8 @@ void waitForInstructions(void){
 	dup2(0,fileno(stdout));
 	dup2(1,fileno(stdin));
 	printf("Enter Search String: ");
-	fscanf(stdin, "%256[^\n]", searchString);
+	//fscanf(stdin, "%256[^\n]", searchString);
+	fgets(searchString,CHAR_BUFFER_LENGTH,stdin);
 	flush();
 	printf("Search String: %s",searchString);
 	

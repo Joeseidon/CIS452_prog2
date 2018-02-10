@@ -54,7 +54,8 @@ void reportFindings(void){
 }
 void waitForInstructions(void){
 	int i;
-	fscanf(stdin, "%256[^\n]", parentMSG);
+	//fscanf(stdin, "%256[^\n]", parentMSG);
+	fgets(parentMSG,CHAR_BUFFER_LENGTH,stdin);
 	flush();
 	printf("Received: %s\n",parentMSG);
 	char *token2;
