@@ -135,6 +135,10 @@ int main(int argc, char *argv[]){
 		/*Parent Work Space*/
 		printf("Parent Process: Work Space Reached\n");
 		
+		while(1){
+			; /* infinit loop for testing*/
+		}
+		
 		/*Assign close Signal to parent only*/
 		//signal (SIGINT, exitHandler);
 	}
