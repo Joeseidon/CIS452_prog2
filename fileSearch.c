@@ -37,8 +37,8 @@ int main(int argc, char *argv[]){
     signal(SIGUSR1, exitHandler);
 	printf("Search Instance Created:\n");
 	//expect two cmd args for pipe 
-	//dup2(atoi(argv[1]),fileno(stdout));
-	//dup2(atoi(argv[2]),fileno(stdin));
+	dup2(atoi(argv[1]),fileno(stdout));
+	dup2(atoi(argv[2]),fileno(stdin));
 	int ready=7;
 	while(remain_active){
 		//printf("Ready\n");

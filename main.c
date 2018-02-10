@@ -121,8 +121,8 @@ int main(int argc, char *argv[]){
 			}
 			else if (pids[i] == 0) 
 			{
-				dup2(pvc[i][1][1],fileno(stdout));
-				dup2(pvc[i][0][0],fileno(stdin));
+				// dup2(pvc[i][1][1],fileno(stdout));
+				// dup2(pvc[i][0][0],fileno(stdin));
 				//Child Process
 				printf("Child %i created.\n",i);
 				
@@ -148,18 +148,18 @@ int main(int argc, char *argv[]){
 			 int j = 0;
 			 char tmp[CHAR_BUFFER_LENGTH];
 			 for(j=0; j<numProcessesNeeded; j++){
-				 dup2(pvc[j][0][1],fileno(stdout));
+				 //dup2(pvc[j][0][1],fileno(stdout));
 				 strcpy(tmp,searchFiles[j]);
 				 strcpy(tmp,strcat(strcat(tmp,","),searchString));
 				 //fprintf(stdout,"%s",strcat(strcat(tmp,","),searchString));
-				 write(fileno(stdout),tmp,sizeof(tmp));
+				 write(pvc[j][0][1],tmp,sizeof(tmp));
 			 }
 			/* Get search responses from pipes */
 			for(j=0; j<numProcessesNeeded; j++){
 				int count=0;
-				dup2(pvc[j][1][0],fileno(stdin));
+				//dup2(pvc[j][1][0],fileno(stdin));
 				//fscanf(stdin,"%i",&count);
-				read(fileno(stdin),&count,sizeof(int));
+				read(pvc[j][1][0],&count,sizeof(int));
 			}
 		}
 	}
@@ -221,8 +221,8 @@ void waitForChildProcesses(void){
 }
 void waitForInstructions(void){
 	int i;
-	dup2(0,fileno(stdout));
-	dup2(1,fileno(stdin));
+	// dup2(0,fileno(stdout));
+	// dup2(1,fileno(stdin));
 	printf("\nEnter Search String: ");
 	//fscanf(stdin, "%256[^\n]", searchString);
 	fgets(searchString,CHAR_BUFFER_LENGTH,stdin);
@@ -235,7 +235,6 @@ void waitForInstructions(void){
 	}
 }
 void exitHandler(int sigNum){
-	dup2(0,fileno(stdout));
 	printf("Exit handler reached\n");
 	
 	//wait for children
