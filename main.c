@@ -109,7 +109,7 @@ int main(int argc, char *argv[]){
 			sprintf(upstream,"%d",pvc[i][1][1]);
 			sprintf(downstream,"%d",pvc[i][0][0]);
 			
-			char *cmd[4]={"fileSearch",upstream,downstream,searchFiles[i],NULL};
+			char *cmd[5]={"fileSearch",upstream,downstream,searchFiles[i],NULL};
 			
 			//Used to control child process
 			process_active[i]=1;
