@@ -146,13 +146,13 @@ int main(int argc, char *argv[]){
 			/* pass search string to child processes with search string */
 			int j = 0;
 			for(j=0; j<numProcessesNeeded; j++){
-				dup2(pipe[j][0][1],fileno(stdout));
+				dup2(pvc[j][0][1],fileno(stdout));
 				fprintf(stdout,"%s",strcat(searchFiles[i],searchString));
 			}
 			/* Get search responses from pipes */
 			for(j=0; j<numProcessesNeeded; j++){
 				int count=0;
-				dup2(pipe[j][1][0],fileno(stdin));
+				dup2(pvc[j][1][0],fileno(stdin));
 				fscanf(stdin,"%i",&count);
 			}
 		}
