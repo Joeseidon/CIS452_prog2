@@ -201,6 +201,7 @@ int main(int argc, char *argv[]){
 	return 0;
 }
 void waitForChildProcesses(void){
+	printf("Waiting For Children...\n");
 	int readyFlag=0,j;
 	for(j=0; j<numProcessesNeeded; j++){
 		dup2(pvc[j][1][0],fileno(stdin));
