@@ -43,8 +43,8 @@ int main(int argc, char *argv[]){
 	while(remain_active){
 		//printf("Ready\n");
 		//Signal ready status to parent
-		fprintf(stdout,"%i",ready);
-		flush();
+		//fprintf(stdout,"%i",ready);
+		//flush();
 		//write(fileno(stdout),&ready,sizeof(ready));
 		//Wait for fileName from Parent on downstream pipe
 		waitForInstructions();
@@ -61,9 +61,10 @@ void reportFindings(void){
 void waitForInstructions(void){
 	int i;
 	//fscanf(stdin, "%256[^\n]", parentMSG);
-	fgets(parentMSG,CHAR_BUFFER_LENGTH,stdin);
-	flush();
-	printf("Received: %s\n",parentMSG);
+	//fgets(parentMSG,CHAR_BUFFER_LENGTH,stdin);
+	//flush();
+	//printf("Received: %s\n",parentMSG);
+	read(fileno(stdin),parentMSG,sizeof(parentMSG));
 	char *token2;
 	i=0;
 	token2 = strtok(parentMSG, ",");
