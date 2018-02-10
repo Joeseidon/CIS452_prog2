@@ -25,7 +25,7 @@ void flush(void);
 /*Global Variables*/
 FILE* collection;
 char *searchFiles[MAX_CHILDREN];
-char *collection_filename;
+char collection_filename[CHAR_BUFFER_LENGTH];
 int childProcessesCreated = 0;
 int numProcessesNeeded = 0;
 int main_run = 1;
@@ -39,7 +39,8 @@ int main(int argc, char *argv[]){
 	//prompt user for file which contains the files names to search
 	do{
 		fprintf(stdout, "Enter collection file name: ");
-		fscanf(stdin, "%s\n",collection_filename);
+		//fscanf(stdin, "%s\n",collection_filename);
+		fgets(collection_filename, sizeof(collection_filename),stdin)
 		printf("Source File: %s\n",collection_filename);
 		collection = fopen(collection_filename,"r");
 		flush();
