@@ -146,12 +146,12 @@ int main(int argc, char *argv[]){
 			/* pass search string to child processes with search string */
 			int j = 0;
 			for(j=0; j<numProcessesNeeded; j++){
-				fprintf(pvc[j][0][1]),"%s",strcat(searchFiles[i],searchString));
+				fprintf(pvc[j][0][1],"%s",strcat(searchFiles[i],searchString));
 			}
 			/* Get search responses from pipes */
 			for(j=0; j<numProcessesNeeded; j++){
 				int count=0;
-				fscanf(pvc[j][1][0]),"%i",&count);
+				fscanf(pvc[j][1][0],"%i",&count);
 			}
 		}
 	}
