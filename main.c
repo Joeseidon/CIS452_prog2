@@ -109,7 +109,7 @@ int main(int argc, char *argv[]){
 			sprintf(upstream,"%d",pvc[i][1][1]);
 			sprintf(downstream,"%d",pvc[i][0][0]);
 			
-			char *cmd[5]={"fileSearch",upstream,downstream,searchFiles[i],NULL};
+			char *cmd[4]={"fileSearch",upstream,downstream,NULL};
 			
 			//Used to control child process
 			process_active[i]=1;
@@ -154,7 +154,7 @@ int main(int argc, char *argv[]){
 				 strcpy(tmp,strcat(strcat(tmp,","),searchString));
 				 printf("Sending data(%s) to process %i\n",tmp,j);
 				 //fprintf(stdout,"%s",strcat(strcat(tmp,","),searchString));
-				 write(pvc[j][0][1],searchString,sizeof(searchString));
+				 write(pvc[j][0][1],tmp,sizeof(tmp));
 			 }
 			/* Get search responses from pipes */
 			for(j=0; j<numProcessesNeeded; j++){

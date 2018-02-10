@@ -40,11 +40,12 @@ int main(int argc, char *argv[]){
 	dup2(atoi(argv[1]),fileno(stdout));
 	dup2(atoi(argv[2]),fileno(stdin));
 	
+	
 	/*Remove trailing '\n' if it exists*/
-	if(argv[3][strlen(argv[3])-1]=='\n'){
+	/*if(argv[3][strlen(argv[3])-1]=='\n'){
 		argv[3][strlen(argv[3])-1] = '\0';
 	}
-	strcpy(filename,argv[3]);
+	strcpy(filename,argv[3]);*/
 	int ready=7;
 	while(remain_active){
 		//printf("Ready\n");
@@ -74,9 +75,9 @@ void waitForInstructions(void){
 	
 	read(fileno(stdin),parentMSG,sizeof(parentMSG));
 	
-	strcpy(searchWord,parentMSG);
+	//strcpy(searchWord,parentMSG);
 	
-	/*char *token2;
+	char *token2;
 	i=0;
 	token2 = strtok(parentMSG, ",");
 	while(token2 != NULL){
@@ -87,7 +88,7 @@ void waitForInstructions(void){
 			searchWord = token2;
 		token2 = strtok(NULL, " ");
 		i++;
-	}*/
+	}
 	/*debugging*/
 	//printf("Filename: %s  SearchWord: %s",filename,searchWord);
 }
