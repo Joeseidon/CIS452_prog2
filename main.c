@@ -144,17 +144,17 @@ int main(int argc, char *argv[]){
 			/* Wait for search string */
 			waitForInstructions();
 			/* pass search string to child processes with search string */
-			int j = 0;
-			for(j=0; j<numProcessesNeeded; j++){
-				dup2(pvc[j][0][1],fileno(stdout));
-				fprintf(stdout,"%s",strcat(searchFiles[i],searchString));
-			}
-			/* Get search responses from pipes */
-			for(j=0; j<numProcessesNeeded; j++){
-				int count=0;
-				dup2(pvc[j][1][0],fileno(stdin));
-				fscanf(stdin,"%i",&count);
-			}
+			// int j = 0;
+			// for(j=0; j<numProcessesNeeded; j++){
+				// dup2(pvc[j][0][1],fileno(stdout));
+				// fprintf(stdout,"%s",strcat(searchFiles[i],searchString));
+			// }
+			// /* Get search responses from pipes */
+			// for(j=0; j<numProcessesNeeded; j++){
+				// int count=0;
+				// dup2(pvc[j][1][0],fileno(stdin));
+				// fscanf(stdin,"%i",&count);
+			// }
 		}
 	}
 	
@@ -206,6 +206,7 @@ void waitForInstructions(void){
 	printf("Enter Search String: ");
 	fscanf(stdin, "%256[^\n]", searchString);
 	flush();
+	printf("Search String: %s",searchString);
 	
 	/*Remove trailing '\n' if it exists*/
 	if(searchString[strlen(searchString)-1]=='\n'){
