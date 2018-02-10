@@ -12,6 +12,7 @@ This program ...
 #include <string.h>
 #include <time.h>
 #include <ctype.h>
+#include <unistd.h>
 
 /*Global Defines*/
 #define CHAR_BUFFER_LENGTH 256
