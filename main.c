@@ -199,10 +199,10 @@ void waitForInstructions(void){
 	int i;
 	dup2(0,fileno(stdout));
 	dup2(1,fileno(stdin));
-	printf("Enter Search String: ");
+	printf("\nEnter Search String: ");
 	//fscanf(stdin, "%256[^\n]", searchString);
 	fgets(searchString,CHAR_BUFFER_LENGTH,stdin);
-	flush();
+	//flush();
 	printf("Search String: %s",searchString);
 	
 	/*Remove trailing '\n' if it exists*/
