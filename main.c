@@ -63,15 +63,7 @@ int main(int argc, char *argv[]){
 			printf("File Read Issue\n");
 		}
 	}
-			
-	/*while(fgets(searchFiles[i],CHAR_BUFFER_LENGTH, collection)!= NULL && i<MAX_CHILDREN){
-		printf("Found: %s\n",searchFiles[i]);
-		//Remove trailing '\n' if it exists
-		if(searchFiles[i][strlen(searchFiles[i])-1]=='\n'){
-			searchFiles[i][strlen(searchFiles[i])-1] = '\0';
-		}
-		i++;
-	}*/
+	sleep(1000);
 	//close file collection
 	fclose(collection);
 	
@@ -79,6 +71,7 @@ int main(int argc, char *argv[]){
 	numProcessesNeeded=i;
 	
 	/* MOVED TO GLOBAL FOR NOW. NEEDS DYNAMIC MEMEORY ALLOCATION*/
+		/*ANYTHING WITH numProcessesNeeded should be dynamicly allocated not globally declared */
 	//int pvc[numProcessesNeeded][2][2];
 	//int process_active[numProcessesNeeded];
 	
