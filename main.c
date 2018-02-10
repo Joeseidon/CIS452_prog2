@@ -163,6 +163,7 @@ int main(int argc, char *argv[]){
 				//dup2(pvc[j][1][0],fileno(stdin));
 				//fscanf(stdin,"%i",&count);
 				read(pvc[j][1][0],&count,sizeof(int));
+				printf("Process %i sent back: %i\n",j,count);
 			}
 		}
 	}
