@@ -24,6 +24,7 @@ This program ...
 void flush(void);
 void exitHandler(int sigNum);
 void waitForInstructions(void);
+void waitForChildProcesses(void);
 /*Global Variables*/
 FILE* collection;
 char searchFiles[MAX_CHILDREN][CHAR_BUFFER_LENGTH];
@@ -137,6 +138,8 @@ int main(int argc, char *argv[]){
 		signal (SIGINT, exitHandler);
 		
 		while(main_run){
+			/* Wait for child processes to signal waiting */
+			waitForChildProcesses();
 			/* Wait for search string */
 			waitForInstructions();
 			/* pass search string to child processes with search string */
@@ -196,6 +199,16 @@ int main(int argc, char *argv[]){
 			//loop until user quit //if prompt value is non-alphabetical close children then parent
 			
 	return 0;
+}
+void waitForChildProcesses(void){
+	int readyFlag=0;
+	for(j=0; j<numProcessesNeeded; j++){
+		dup2(pvc[j][1][0],fileno(stdin));
+		while(readyFlag != 7){
+			fscanf(stdin,"%i",&readyFlag);
+		}
+		readyFlag=0;
+	}
 }
 void waitForInstructions(void){
 	int i;
