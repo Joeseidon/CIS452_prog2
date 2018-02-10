@@ -64,7 +64,7 @@ int main(int argc, char *argv[]){
 			break;
 		}
 	}
-	sleep(1000);
+
 	//close file collection
 	fclose(collection);
 	
@@ -77,6 +77,7 @@ int main(int argc, char *argv[]){
 	//int process_active[numProcessesNeeded];
 	
 	printf("Found %i files to search in collection",i);
+	sleep(1000);
 	//define pipes
 	for(i=0; i<numProcessesNeeded; i++){
 		pipe(pvc[i][0]);
