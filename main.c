@@ -31,6 +31,7 @@ int numProcessesNeeded = 0;
 int main_run = 1;
 int remain_active = 1;
 int debug = 1;
+char *filename;
 
 
 
@@ -41,12 +42,13 @@ int main(int argc, char *argv[]){
 		fprintf(stdout, "Enter collection file name: ");
 		//fscanf(stdin, "%s\n",collection_filename);
 		fgets(collection_filename, sizeof(collection_filename),stdin);
-		printf("Source File: %s\n   Length: %i",collection_filename,strlen(collection_filename));
+		/*printf("Source File: %s\n   Length: %i",collection_filename,strlen(collection_filename));*/
+		/*collection_filename[strlen(collection_filename)-1]='\0';*/
 		collection = fopen(collection_filename,"r");
 		flush();
 	}while(collection == NULL);
 
-	
+	printf("File Found and Opened\n");
 	//read file which holds file names to search (max 10 files)
 	int i=0;
 	while(fgets(searchFiles[i],CHAR_BUFFER_LENGTH, collection)!= NULL && i<MAX_CHILDREN){
