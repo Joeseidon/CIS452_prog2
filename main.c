@@ -40,7 +40,7 @@ int main(int argc, char *argv[]){
 	do{
 		fprintf(stdout, "Enter collection file name: ");
 		//fscanf(stdin, "%s\n",collection_filename);
-		fgets(collection_filename, sizeof(collection_filename),stdin)
+		fgets(collection_filename, sizeof(collection_filename),stdin);
 		printf("Source File: %s\n",collection_filename);
 		collection = fopen(collection_filename,"r");
 		flush();
