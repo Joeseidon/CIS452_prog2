@@ -32,7 +32,8 @@ int main_run = 1;
 int remain_active = 1;
 int debug = 1;
 char *filename;
-
+int pvc[MAX_CHILDREN][2][2];
+int process_active[MAX_CHILDREN];
 
 
 int main(int argc, char *argv[]){
@@ -41,12 +42,10 @@ int main(int argc, char *argv[]){
 	do{
 		fprintf(stdout, "Enter collection file name: ");
 		fflush(stdout);
-		//fscanf(stdin, "%s\n",collection_filename);
 		fgets(collection_filename, sizeof(collection_filename),stdin);
-		/*printf("Source File: %s\n   Length: %i",collection_filename,strlen(collection_filename));*/
+		//Remove trailing '\n'
 		collection_filename[strlen(collection_filename)-1]='\0';
 		collection = fopen(collection_filename,"r");
-		//flush();
 	}while(collection == NULL);
 
 	printf("File Found and Opened\n");
@@ -61,9 +60,11 @@ int main(int argc, char *argv[]){
 	//determine number of children 
 	numProcessesNeeded=i;
 	
-	int pvc[numProcessesNeeded][2][2];
-	int process_active[numProcessesNeeded];
+	/* MOVED TO GLOBAL FOR NOW. NEEDS DYNAMIC MEMEORY ALLOCATION*/
+	//int pvc[numProcessesNeeded][2][2];
+	//int process_active[numProcessesNeeded];
 	
+	prinf("Found %i files to search in collection",i);
 	//define pipes
 	for(i=0; i<numProcessesNeeded; i++){
 		pipe(pvc[i][0]);
