@@ -141,9 +141,11 @@ int main(int argc, char *argv[]){
 			waitForInstructions();
 			/* pass search string to child processes with search string */
 			 int j = 0;
+			 char *tmp;
 			 for(j=0; j<numProcessesNeeded; j++){
 				 dup2(pvc[j][0][1],fileno(stdout));
-				 fprintf(stdout,"%s",strcat(strcat(searchFiles[j],","),searchString));
+				 strcpy(tmp,searchFiles[j]);
+				 fprintf(stdout,"%s",strcat(strcat(tmp,","),searchString));
 			 }
 			// /* Get search responses from pipes */
 			// for(j=0; j<numProcessesNeeded; j++){
