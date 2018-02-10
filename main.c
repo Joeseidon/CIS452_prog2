@@ -143,7 +143,7 @@ int main(int argc, char *argv[]){
 			 int j = 0;
 			 for(j=0; j<numProcessesNeeded; j++){
 				 dup2(pvc[j][0][1],fileno(stdout));
-				 fprintf(stdout,"%s",strcat(searchFiles[j],searchString));
+				 fprintf(stdout,"%s",strcat(strcat(searchFiles[j],","),searchString));
 			 }
 			// /* Get search responses from pipes */
 			// for(j=0; j<numProcessesNeeded; j++){
