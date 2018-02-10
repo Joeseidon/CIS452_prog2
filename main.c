@@ -150,7 +150,7 @@ int main(int argc, char *argv[]){
 			 for(j=0; j<numProcessesNeeded; j++){
 				 dup2(pvc[j][0][1],fileno(stdout));
 				 strcpy(tmp,searchFiles[j]);
-				 strcpy(tmp,strcat(strcat(tmp,","),searchString)));
+				 strcpy(tmp,strcat(strcat(tmp,","),searchString));
 				 //fprintf(stdout,"%s",strcat(strcat(tmp,","),searchString));
 				 write(fileno(stdout),tmp,sizeof(tmp));
 			 }
