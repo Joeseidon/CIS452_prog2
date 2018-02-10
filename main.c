@@ -52,6 +52,7 @@ int main(int argc, char *argv[]){
 	//read file which holds file names to search (max 10 files)
 	int i=0;
 	for(i=0; i< MAX_CHILDREN; i++){
+		printf("Entered For Loop\n");
 		if(fgets(searchFiles[i],CHAR_BUFFER_LENGTH, collection)!= NULL){
 			printf("Found: %s\n",searchFiles[i]);
 			/*Remove trailing '\n' if it exists*/
