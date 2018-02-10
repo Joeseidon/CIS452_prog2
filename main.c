@@ -138,7 +138,7 @@ int main(int argc, char *argv[]){
 		/*Assign close Signal to parent only*/
 		signal (SIGINT, exitHandler);
 		
-		while(1){
+		while(main_run){
 			; /* infinit loop for testing*/
 		}
 	}
@@ -199,7 +199,7 @@ void exitHandler(int sigNum){
 		childPid = wait(&status);
 		printf("Child %ld, exited with status = %d.\n", (long)childPid, WEXITSTATUS(status));
 	}
-	
+	main_run = false;
 	return;
 }
 void flush(void)
