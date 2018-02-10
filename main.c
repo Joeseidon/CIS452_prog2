@@ -148,14 +148,17 @@ int main(int argc, char *argv[]){
 			 int j = 0;
 			 char tmp[CHAR_BUFFER_LENGTH];
 			 for(j=0; j<numProcessesNeeded; j++){
+				 
 				 //dup2(pvc[j][0][1],fileno(stdout));
 				 strcpy(tmp,searchFiles[j]);
 				 strcpy(tmp,strcat(strcat(tmp,","),searchString));
+				 printf("Sending data(%s) to process %i\n",tmp,j);
 				 //fprintf(stdout,"%s",strcat(strcat(tmp,","),searchString));
 				 write(pvc[j][0][1],tmp,sizeof(tmp));
 			 }
 			/* Get search responses from pipes */
 			for(j=0; j<numProcessesNeeded; j++){
+				printf("Waiting for Search Results...\n");
 				int count=0;
 				//dup2(pvc[j][1][0],fileno(stdin));
 				//fscanf(stdin,"%i",&count);
@@ -235,7 +238,7 @@ void waitForInstructions(void){
 	}
 }
 void exitHandler(int sigNum){
-	printf("Exit handler reached\n");
+	printf("\nShutdown sequence:\n");
 	
 	//wait for children
 	int status,i;
