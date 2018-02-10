@@ -243,7 +243,7 @@ void exitHandler(int sigNum){
 		printf("Child %ld, exited with status = %d.\n", (long)childPid, WEXITSTATUS(status));
 	}
 	main_run = 0;
-	raise(SIGQUIT);
+	raise(SIGSTOP);
 }
 void flush(void)
 {
