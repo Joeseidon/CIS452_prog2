@@ -42,7 +42,7 @@ int main(int argc, char *argv[]){
 	while(remain_active){
 		printf("Ready\n");
 		//Signal ready status to parent
-		fprintf(stdout,"%i",7);
+		fprintf(stdout_FILENUM,"%i",7);
 		//Wait for fileName from Parent on downstream pipe
 		waitForInstructions();
 		//On filename receive start search 
