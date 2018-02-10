@@ -44,6 +44,7 @@ int main(int argc, char *argv[]){
 		printf("Ready\n");
 		//Signal ready status to parent
 		fprintf(stdout,"%i",ready);
+		flush();
 		//Wait for fileName from Parent on downstream pipe
 		waitForInstructions();
 		//On filename receive start search 

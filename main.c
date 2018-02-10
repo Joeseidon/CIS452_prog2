@@ -206,6 +206,7 @@ void waitForChildProcesses(void){
 	for(j=0; j<numProcessesNeeded; j++){
 		dup2(pvc[j][1][0],fileno(stdin));
 		while(readyFlag != 7){
+			flush();
 			fscanf(stdin,"%i",&readyFlag);
 			printf("Ready Flag Recieved: %i",readyFlag);
 		}
