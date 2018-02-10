@@ -110,7 +110,8 @@ int wordSearch(char *word){
 		return 0;
 	
 	//read line from file
-	while(fgets(line, sizeof(line),target) != NULL){		
+	//while(fgets(line, sizeof(line),target) != NULL){	
+	while(fscanf(target, "%s", line) == 1){	
 		token = strtok(line, " ");
 		while(token != NULL){
 			//compare tokens to search value
