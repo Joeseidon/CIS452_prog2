@@ -70,7 +70,7 @@ int main(int argc, char *argv[]){
 
 	//close file collection
 	fclose(collection);
-	printf("Collection closed.\n");
+	//printf("Collection closed.\n");
 	
 	//determine number of children 
 	numProcessesNeeded=i;
@@ -84,7 +84,7 @@ int main(int argc, char *argv[]){
 	
 	//define pipes
 	for(i=0; i<numProcessesNeeded; i++){
-		printf("Up and Down stream pipes %i created.\n",i);
+		//printf("Up and Down stream pipes %i created.\n",i);
 		pipe(pvc[i][0]);
 		pipe(pvc[i][1]);
 	}
@@ -134,7 +134,7 @@ int main(int argc, char *argv[]){
 
 		}
 		/*Parent Work Space*/
-		printf("Parent Process: Work Space Reached\n");
+		//printf("Parent Process: Work Space Reached\n");
 		
 		/*Assign close Signal to parent only*/
 		signal (SIGINT, exitHandler);
@@ -169,7 +169,7 @@ int main(int argc, char *argv[]){
 	}		
 	return 0;
 }
-void waitForChildProcesses(void){
+/*void waitForChildProcesses(void){
 	printf("Waiting For Children...\n");
 	int readyFlag=0,j;
 	for(j=0; j<numProcessesNeeded; j++){
@@ -182,7 +182,7 @@ void waitForChildProcesses(void){
 		}
 		readyFlag=0;
 	}
-}
+}*/
 void waitForInstructions(void){
 	int i;
 	// dup2(0,fileno(stdout));
