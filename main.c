@@ -39,6 +39,7 @@ char *filename;
 int pvc[MAX_CHILDREN][2][2];
 int process_active[MAX_CHILDREN];
 
+pid_t childpids[10];
 
 int main(int argc, char *argv[]){
 	
@@ -92,7 +93,7 @@ int main(int argc, char *argv[]){
 	
 	while(main_run){
 		pid_t pids[10];
-		int i;
+		int i,k=0;
 
 		/* Create Child Processes */
 		for (i = 0; i < numProcessesNeeded; i++) 
@@ -121,6 +122,8 @@ int main(int argc, char *argv[]){
 			}
 			else if (pids[i] == 0) 
 			{
+				childpids[k]=pids[i];
+				k++;
 				// dup2(pvc[i][1][1],fileno(stdout));
 				// dup2(pvc[i][0][0],fileno(stdin));
 				//Child Process
@@ -247,7 +250,7 @@ void exitHandler(int sigNum){
 	for(i=0; i<numProcessesNeeded; i++){
 		process_active[i]=0; //cancel child process loop
 		/*Signal Child Process to Abort*/
-		
+		kill(childpids[i],SIGUSR1);
 		/*Wait for process to return*/
 		childPid = wait(&status);
 		printf("Child %ld, exited with status = %d.\n", (long)childPid, WEXITSTATUS(status));
