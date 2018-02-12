@@ -51,19 +51,16 @@ int main(int argc, char *argv[]){
 		collection = fopen(collection_filename,"r");
 	}while(collection == NULL);
 
-	printf("File Found and Opened\n");
 	//read file which holds file names to search (max 10 files)
 	int i=0;
 	for(i=0; i< MAX_CHILDREN; i++){
-		printf("Entered For Loop\n");
 		if(fgets(searchFiles[i],CHAR_BUFFER_LENGTH, collection)!= NULL){
-			printf("Found: %s\n",searchFiles[i]);
 			/*Remove trailing '\n' if it exists*/
 			if(searchFiles[i][strlen(searchFiles[i])-1]=='\n'){
 				searchFiles[i][strlen(searchFiles[i])-1] = '\0';
 			}
 		}else{
-			printf("No files left in collection. Break.\n");
+			//printf("No files left in collection. Break.\n");
 			break;
 		}
 	}
@@ -109,7 +106,7 @@ int main(int argc, char *argv[]){
 			else if (pids[i] == 0) 
 			{
 				//Child Process
-				printf("Child %i created.\n",i);
+				//printf("Child %i created.\n",i);
 				
 				//call exec passing upstream pipe and downstream pipe as args
 				if (execvp(cmd[0],cmd) < 0) {
