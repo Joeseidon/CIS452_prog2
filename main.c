@@ -40,6 +40,8 @@ char *filename;
 int pvc[MAX_CHILDREN][2][2];
 int process_active[MAX_CHILDREN];
 
+pid_t childpids[10];
+
 int main(int argc, char *argv[]){
 	
 	//prompt user for file which contains the files names to search
@@ -85,7 +87,7 @@ int main(int argc, char *argv[]){
 	
 	while(main_run){
 		pid_t pids[10];
-		int i;
+		int i,k=0;
 
 		/* Create Child Processes */
 		for (i = 0; i < numProcessesNeeded; i++) 
@@ -113,8 +115,11 @@ int main(int argc, char *argv[]){
 					perror("exec failed");
 					exit(7);
 				}
+			}else{
+				childpids[k]=pids[i];
+				k++;
 			}
-
+			
 		}
 		/*Parent Work Space*/
 		
@@ -167,7 +172,7 @@ void exitHandler(int sigNum){
 	for(i=0; i<numProcessesNeeded; i++){
 		process_active[i]=0; //cancel child process loop
 		/*Signal Child Process to Abort*/
-		
+		kill(childpids[i],SIGUSR1);
 		/*Wait for process to return*/
 		childPid = wait(&status);
 		printf("Child %ld, exited with status = %d.\n", (long)childPid, WEXITSTATUS(status));

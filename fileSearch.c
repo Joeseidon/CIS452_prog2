@@ -47,7 +47,7 @@ int main(int argc, char *argv[]){
 		//following search report results on upstream pipe
 		reportFindings();
 	}
-	return 0;
+	exit(0);
 }
 void reportFindings(void){
 	write(fileno(stdout),&numberOfMatches,sizeof(int));
