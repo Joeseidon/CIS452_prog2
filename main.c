@@ -171,6 +171,7 @@ void exitHandler(int sigNum){
 	pid_t childPid;
 	for(i=0; i<numProcessesNeeded; i++){
 		process_active[i]=0; //cancel child process loop
+		printf("Sent kill cmd to child: %ld\n",(long)childpids[i]);
 		/*Signal Child Process to Abort*/
 		kill(childpids[i],SIGUSR1);
 		/*Wait for process to return*/
