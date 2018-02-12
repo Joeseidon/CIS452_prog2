@@ -47,7 +47,7 @@ int main(int argc, char *argv[]){
 		//following search report results on upstream pipe
 		reportFindings();
 	}
-	exit(0);
+	return 0;
 }
 void reportFindings(void){
 	write(fileno(stdout),&numberOfMatches,sizeof(int));
@@ -115,4 +115,6 @@ void exitHandler(int sigNum){
 	fprintf(stdout,"Exiting Child: %d\n",getpid());
 	
 	remain_active=0; //exits main while loop
+	
+	exit(0);
 }
