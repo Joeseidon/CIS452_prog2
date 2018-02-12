@@ -148,6 +148,9 @@ void waitForInstructions(void){
 
 	fgets(searchString,CHAR_BUFFER_LENGTH,stdin);
 	
+	if(!isalpha(searchString[0])
+		raise(SIGINT);
+	
 	/*Remove trailing '\n' if it exists*/
 	if(searchString[strlen(searchString)-1]=='\n'){
 		searchString[strlen(searchString)-1] = '\0';
