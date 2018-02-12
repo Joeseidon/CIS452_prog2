@@ -36,12 +36,8 @@ int childProcessesCreated = 0;								//Number of child processes that have been
 int numProcessesNeeded = 0;									//Number of processes needed based on number of search files
 
 int main_run = 1;											//Should main process remain running
-//int remain_active = 1;
-
-//char *filename;
 
 int pvc[MAX_CHILDREN][2][2];								//Up and down stream pipes for parent <-> child communication
-//int process_active[MAX_CHILDREN];
 
 pid_t childpids[10];										//Child process pids
 
@@ -103,24 +99,21 @@ int main(int argc, char *argv[]){
 			
 			char *cmd[4]={"fileSearch",upstream,downstream,NULL};
 			
-			//Used to control child process
-			//process_active[i]=1;
-			
 			if((pids[i] = fork()) < 0) 
 			{
 				perror("fork error");
-				
 			}
 			else if (pids[i] == 0) 
 			{
 				//Child Process
 				
-				//call exec passing upstream pipe and downstream pipe as args
+				//Call exec passing upstream pipe and downstream pipe as args
 				if (execvp(cmd[0],cmd) < 0) {
 					perror("exec failed");
 					exit(7);
 				}
 			}else{
+				//Add child pids to storage area of later signal use
 				childpids[k]=pids[i];
 				k++;
 			}
@@ -134,7 +127,7 @@ int main(int argc, char *argv[]){
 		while(main_run){
 			/* Wait for search string */
 			waitForInstructions();
-			/* pass search file to child processes with search string */
+			/* Pass search file to child processes with search string */
 			 int j = 0;
 			 char tmp[CHAR_BUFFER_LENGTH];
 			 for(j=0; j<numProcessesNeeded; j++){
@@ -175,13 +168,18 @@ void exitHandler(int sigNum){
 	int status,i;
 	pid_t childPid;
 	for(i=0; i<numProcessesNeeded; i++){
-		//process_active[i]=0; //cancel child process loop
 		printf("Sent kill cmd to child: %ld\n",(long)childpids[i]);
 		/*Signal Child Process to Abort*/
 		kill(childpids[i],SIGUSR1);
 		/*Wait for process to return*/
 		childPid = wait(&status);
 		printf("Child %ld, exited with status = %d.\n", (long)childPid, WEXITSTATUS(status));
+		
+		//Close Pipes
+		close(pvc[i][0][0]);
+		close(pvc[i][0][1]);
+		close(pvc[i][1][0]);
+		close(pvc[i][1][1]);
 	}
 	main_run = 0;
 	raise(SIGQUIT);

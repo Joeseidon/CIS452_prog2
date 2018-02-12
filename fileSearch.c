@@ -26,16 +26,17 @@ void waitForInstructions(void);
 void reportFindings(void);
 
 /*Global Variables*/
-int numberOfMatches = 0;
-int searchComplete = 0;
-int remain_active=1;
-char *filename, *searchWord, parentMSG[CHAR_BUFFER_LENGTH];
-FILE *target;
+int numberOfMatches = 0;										//Number of word matches found in file
+int searchComplete = 0;											//Indicates search process has completed
+int remain_active=1;											//Should main loop remain active
+char *filename, *searchWord, parentMSG[CHAR_BUFFER_LENGTH];		//Parent message and temp strings for parsing 
+FILE *target;													//Target search file
 
 int main(int argc, char *argv[]){
 	/* Assign Signal Handler For Exit */ 
     signal(SIGUSR1, exitHandler);
-	//expect two cmd args for pipe 
+	
+	//Expect two cmd args for up and down stream pipes 
 	dup2(atoi(argv[1]),fileno(stdout));
 	dup2(atoi(argv[2]),fileno(stdin));
 	
@@ -44,7 +45,7 @@ int main(int argc, char *argv[]){
 		waitForInstructions();
 		//On filename receive start search 
 		numberOfMatches=wordSearch(searchWord);
-		//following search report results on upstream pipe
+		//Following search report results on upstream pipe
 		reportFindings();
 	}
 	return 0;
@@ -83,7 +84,7 @@ int wordSearch(char *word){
 	
 	target = fopen (filename,"r" );
 	
-	//confirm file is valid 
+	//Confirm file is valid 
 	if(target == NULL)
 		return 0;
 	
@@ -97,6 +98,7 @@ int wordSearch(char *word){
 			token = strtok(NULL, " ");
 		}		
 	}	
+	fclose(target);
 	return word_count;
 }
 
@@ -110,7 +112,9 @@ char *strlwr(char *str)
 }
 
 void exitHandler(int sigNum){
-	//Clean Up if needed 
+	//Clean Up
+	if(target != NULL)
+		fclose(target);
 	
 	fprintf(stdout,"Exiting Child: %d\n",getpid());
 	
