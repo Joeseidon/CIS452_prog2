@@ -142,6 +142,7 @@ int main(int argc, char *argv[]){
 				 printf("Sent search criteria to child: %ld\n", (long)childpids[j]);
 				 write(pvc[j][0][1],tmp,sizeof(tmp));
 			 }
+			 printf("\n");
 			/* Get search responses from pipes */
 			for(j=0; j<numProcessesNeeded; j++){
 				printf("Waiting for Search Results From Process %d...\n",j);
@@ -162,7 +163,7 @@ void summerizeResults(void){
 	for(x=0; x<numProcessesNeeded; x++){
 		total+=searchCount[x];
 	}
-	printf("We Found, %s, %d times in the provided files.\n",searchString,total);
+	printf("\nWe Found, %s, %d times in the provided files.\n",searchString,total);
 }
 
 void waitForInstructions(void){
@@ -178,6 +179,7 @@ void waitForInstructions(void){
 	if(searchString[strlen(searchString)-1]=='\n'){
 		searchString[strlen(searchString)-1] = '\0';
 	}
+	printf("\n");
 }
 void exitHandler(int sigNum){
 	printf("\nShutdown sequence:\n");
