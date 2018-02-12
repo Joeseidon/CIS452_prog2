@@ -26,31 +26,38 @@ void flush(void);
 void exitHandler(int sigNum);
 void waitForInstructions(void);
 void waitForChildProcesses(void);
+
 /*Global Variables*/
-FILE* collection;
-char searchFiles[MAX_CHILDREN][CHAR_BUFFER_LENGTH];
-char collection_filename[CHAR_BUFFER_LENGTH];
-char searchString[CHAR_BUFFER_LENGTH];
-int childProcessesCreated = 0;
-int numProcessesNeeded = 0;
-int main_run = 1;
-int remain_active = 1;
+FILE* collection;											//User provided file containing search file names
+char searchFiles[MAX_CHILDREN][CHAR_BUFFER_LENGTH];			//Search file names read from collection
+char collection_filename[CHAR_BUFFER_LENGTH];				//User provided file name containing search file names
+char searchString[CHAR_BUFFER_LENGTH];						//Users provided key word to search for
+int childProcessesCreated = 0;								//Number of child processes that have been created
+int numProcessesNeeded = 0;									//Number of processes needed based on number of search files
 
-char *filename;
-int pvc[MAX_CHILDREN][2][2];
-int process_active[MAX_CHILDREN];
+int main_run = 1;											//Should main process remain running
+//int remain_active = 1;
 
-pid_t childpids[10];
+//char *filename;
+
+int pvc[MAX_CHILDREN][2][2];								//Up and down stream pipes for parent <-> child communication
+//int process_active[MAX_CHILDREN];
+
+pid_t childpids[10];										//Child process pids
 
 int main(int argc, char *argv[]){
-	
 	//prompt user for file which contains the files names to search
 	do{
 		fprintf(stdout, "Enter collection file name: ");
 		fflush(stdout);
 		fgets(collection_filename, sizeof(collection_filename),stdin);
+		
 		//Remove trailing '\n'
-		collection_filename[strlen(collection_filename)-1]='\0';
+		if(collection_filename[strlen(collection_filename)-1]='\n'){
+			collection_filename[strlen(collection_filename)-1]='\0';
+		}
+		
+		//Attempt to open collection
 		collection = fopen(collection_filename,"r");
 	}while(collection == NULL);
 
@@ -73,9 +80,6 @@ int main(int argc, char *argv[]){
 	
 	//determine number of children 
 	numProcessesNeeded=i;
-	
-	/* MOVED TO GLOBAL FOR NOW. NEEDS DYNAMIC MEMEORY ALLOCATION*/
-		/*ANYTHING WITH numProcessesNeeded should be dynamicly allocated not globally declared */
 		
 	printf("Found %i files to search in collection\n",numProcessesNeeded);
 	
@@ -92,6 +96,7 @@ int main(int argc, char *argv[]){
 		/* Create Child Processes */
 		for (i = 0; i < numProcessesNeeded; i++) 
 		{
+			//Create parameter package for exec call
 			char upstream[CHAR_BUFFER_LENGTH],downstream[CHAR_BUFFER_LENGTH];
 			sprintf(upstream,"%d",pvc[i][1][1]);
 			sprintf(downstream,"%d",pvc[i][0][0]);
@@ -99,7 +104,7 @@ int main(int argc, char *argv[]){
 			char *cmd[4]={"fileSearch",upstream,downstream,NULL};
 			
 			//Used to control child process
-			process_active[i]=1;
+			//process_active[i]=1;
 			
 			if((pids[i] = fork()) < 0) 
 			{
@@ -129,7 +134,7 @@ int main(int argc, char *argv[]){
 		while(main_run){
 			/* Wait for search string */
 			waitForInstructions();
-			/* pass search string to child processes with search string */
+			/* pass search file to child processes with search string */
 			 int j = 0;
 			 char tmp[CHAR_BUFFER_LENGTH];
 			 for(j=0; j<numProcessesNeeded; j++){
@@ -170,7 +175,7 @@ void exitHandler(int sigNum){
 	int status,i;
 	pid_t childPid;
 	for(i=0; i<numProcessesNeeded; i++){
-		process_active[i]=0; //cancel child process loop
+		//process_active[i]=0; //cancel child process loop
 		printf("Sent kill cmd to child: %ld\n",(long)childpids[i]);
 		/*Signal Child Process to Abort*/
 		kill(childpids[i],SIGUSR1);
