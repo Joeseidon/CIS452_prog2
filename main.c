@@ -122,8 +122,7 @@ int main(int argc, char *argv[]){
 			}
 			else if (pids[i] == 0) 
 			{
-				childpids[k]=pids[i];
-				k++;
+				
 				// dup2(pvc[i][1][1],fileno(stdout));
 				// dup2(pvc[i][0][0],fileno(stdin));
 				//Child Process
@@ -134,6 +133,11 @@ int main(int argc, char *argv[]){
 					perror("exec failed");
 					exit(7);
 				}
+			}
+			
+			if(pids[i] == 0){
+				childpids[k]=pids[i];
+				k++;
 			}
 		}
 		/*Parent Work Space*/
@@ -169,47 +173,7 @@ int main(int argc, char *argv[]){
 				printf("Process %i sent back: %i\n",j,count);
 			}
 		}
-	}
-	
-	//signal children to stop
-	
-	//wait for children
-	// int status;
-	// pid_t childPid;
-	// for(i=0; i<numProcessesNeeded; i++){
-		// process_active[i]=0; //cancel child process loop
-		// /*Signal Child Process to Abort*/
-		
-		// /*Wait for process to return*/
-		// childPid = wait(&status);
-		// printf("Child %ld, exited with status = %d.\n", (long)childPid, WEXITSTATUS(status));
-	// }
-	
-	//while (files left in list)
-		//read in name 
-		//create a child process with fork()
-		
-		//if child process
-			//set up upstream pipe 
-				//dup2 with stdout
-			//set up down stream pipe 
-				//dup2 with stdin
-		
-			//call exec using fileSearch.c
-			
-		//if parent
-			//wait for all child process to be created 
-			
-			//send a file name to each child process
-			
-			//prompt user for search word 
-			
-			//send the search word to all children
-			
-			//wait for the children to report
-			
-			//loop until user quit //if prompt value is non-alphabetical close children then parent
-			
+	}		
 	return 0;
 }
 void waitForChildProcesses(void){
