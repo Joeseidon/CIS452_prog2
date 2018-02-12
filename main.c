@@ -150,7 +150,7 @@ void waitForInstructions(void){
 
 	fgets(searchString,CHAR_BUFFER_LENGTH,stdin);
 
-	printf("Search String: %s",searchString);
+	//printf("Search String: %s",searchString);
 	
 	/*Remove trailing '\n' if it exists*/
 	if(searchString[strlen(searchString)-1]=='\n'){

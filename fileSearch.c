@@ -46,7 +46,6 @@ int main(int argc, char *argv[]){
 		argv[3][strlen(argv[3])-1] = '\0';
 	}
 	strcpy(filename,argv[3]);*/
-	int ready=7;
 	while(remain_active){
 		//printf("Ready\n");
 		//Signal ready status to parent
