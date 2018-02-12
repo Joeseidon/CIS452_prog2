@@ -60,7 +60,7 @@ int main(int argc, char *argv[]){
 				searchFiles[i][strlen(searchFiles[i])-1] = '\0';
 			}
 		}else{
-			//printf("No files left in collection. Break.\n");
+			//all processes created
 			break;
 		}
 	}
@@ -106,7 +106,6 @@ int main(int argc, char *argv[]){
 			else if (pids[i] == 0) 
 			{
 				//Child Process
-				//printf("Child %i created.\n",i);
 				
 				//call exec passing upstream pipe and downstream pipe as args
 				if (execvp(cmd[0],cmd) < 0) {
@@ -130,7 +129,6 @@ int main(int argc, char *argv[]){
 			 for(j=0; j<numProcessesNeeded; j++){
 				 strcpy(tmp,searchFiles[j]);
 				 strcpy(tmp,strcat(strcat(tmp,","),searchString));
-				 //printf("Sending data(%s) to process %i\n",tmp,j);
 				 write(pvc[j][0][1],tmp,sizeof(tmp));
 			 }
 			/* Get search responses from pipes */
@@ -149,8 +147,6 @@ void waitForInstructions(void){
 	printf("\nEnter Search String: ");
 
 	fgets(searchString,CHAR_BUFFER_LENGTH,stdin);
-
-	//printf("Search String: %s",searchString);
 	
 	/*Remove trailing '\n' if it exists*/
 	if(searchString[strlen(searchString)-1]=='\n'){

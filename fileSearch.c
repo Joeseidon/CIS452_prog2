@@ -35,23 +35,11 @@ FILE *target;
 int main(int argc, char *argv[]){
 	/* Assign Signal Handler For Exit */ 
     signal(SIGUSR1, exitHandler);
-	//printf("Search Instance Created:\n");
 	//expect two cmd args for pipe 
 	dup2(atoi(argv[1]),fileno(stdout));
 	dup2(atoi(argv[2]),fileno(stdin));
 	
-	
-	/*Remove trailing '\n' if it exists*/
-	/*if(argv[3][strlen(argv[3])-1]=='\n'){
-		argv[3][strlen(argv[3])-1] = '\0';
-	}
-	strcpy(filename,argv[3]);*/
 	while(remain_active){
-		//printf("Ready\n");
-		//Signal ready status to parent
-		//fprintf(stdout,"%i",ready);
-		//flush();
-		//write(fileno(stdout),&ready,sizeof(ready));
 		//Wait for fileName from Parent on downstream pipe
 		waitForInstructions();
 		//On filename receive start search 
@@ -62,19 +50,12 @@ int main(int argc, char *argv[]){
 	return 0;
 }
 void reportFindings(void){
-	//fprintf(stdout, "%d",numberOfMatches);
 	write(fileno(stdout),&numberOfMatches,sizeof(int));
 }
 void waitForInstructions(void){
 	int i;
-	//fscanf(stdin, "%256[^\n]", parentMSG);
-	//fgets(parentMSG,CHAR_BUFFER_LENGTH,stdin);
-	//flush();
-	//printf("Received: %s\n",parentMSG);
 	
 	read(fileno(stdin),parentMSG,sizeof(parentMSG));
-	
-	//strcpy(searchWord,parentMSG);
 	
 	char *token2;
 	i=0;
@@ -88,8 +69,6 @@ void waitForInstructions(void){
 		token2 = strtok(NULL, " ");
 		i++;
 	}
-	/*debugging*/
-	//printf("Filename: %s  SearchWord: %s",filename,searchWord);
 }
 void flush(void)
 {
@@ -108,8 +87,7 @@ int wordSearch(char *word){
 	if(target == NULL)
 		return 0;
 	
-	//read line from file
-	//while(fgets(line, sizeof(line),target) != NULL){	
+	//read line from file	
 	while(fscanf(target, "%s", line) == 1){	
 		token = strtok(line, " ");
 		while(token != NULL){
