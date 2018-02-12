@@ -53,7 +53,7 @@ int main(int argc, char *argv[]){
 		fgets(collection_filename, sizeof(collection_filename),stdin);
 		
 		//Remove trailing '\n'
-		if(collection_filename[strlen(collection_filename)-1]='\n'){
+		if((collection_filename[strlen(collection_filename)-1]='\n')){
 			collection_filename[strlen(collection_filename)-1]='\0';
 		}
 		
