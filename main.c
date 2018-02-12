@@ -39,8 +39,6 @@ char *filename;
 int pvc[MAX_CHILDREN][2][2];
 int process_active[MAX_CHILDREN];
 
-pid_t childpids[10];
-
 int main(int argc, char *argv[]){
 	
 	//prompt user for file which contains the files names to search
@@ -122,7 +120,6 @@ int main(int argc, char *argv[]){
 			}
 			else if (pids[i] == 0) 
 			{
-				
 				// dup2(pvc[i][1][1],fileno(stdout));
 				// dup2(pvc[i][0][0],fileno(stdin));
 				//Child Process
@@ -134,11 +131,7 @@ int main(int argc, char *argv[]){
 					exit(7);
 				}
 			}
-			
-			if(pids[i] == 0){
-				childpids[k]=pids[i];
-				k++;
-			}
+
 		}
 		/*Parent Work Space*/
 		printf("Parent Process: Work Space Reached\n");
@@ -213,9 +206,8 @@ void exitHandler(int sigNum){
 	pid_t childPid;
 	for(i=0; i<numProcessesNeeded; i++){
 		process_active[i]=0; //cancel child process loop
-		printf("Kill child with pid %ld.\n", (long)childpids[i]);
 		/*Signal Child Process to Abort*/
-		kill(childpids[i],SIGUSR1);
+		
 		/*Wait for process to return*/
 		childPid = wait(&status);
 		printf("Child %ld, exited with status = %d.\n", (long)childPid, WEXITSTATUS(status));
