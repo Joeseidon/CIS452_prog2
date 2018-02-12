@@ -15,6 +15,7 @@ This program ...
 #include <sys/wait.h>
 #include <sys/time.h>
 #include <sys/resource.h>
+#include <ctype.h>
 
 /*Global Defines*/
 #define MAX_CHILDREN 10
