@@ -2,7 +2,12 @@
  @author   - Joseph Cutino
  @version  - Winter 2018 
 
-This program ...
+This program is utilized from main.c found in this directory. Upon start up,
+this program will wait for instructions from the parent process. These
+instructions will contain a search file and key word. This process will then
+open the provided file, if possible, and search for the provided key word. Once
+the search is complete, the count will be passed back to the commanding process.
+This process will continue until instructed to close down via SIGUSR1.
 *******************************************************************************/
 /*Standard Includes*/
 #include <stdio.h>

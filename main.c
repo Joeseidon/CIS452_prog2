@@ -2,7 +2,9 @@
  @author   - Joseph Cutino
  @version  - Winter 2018 
 
-This program ...
+This program creates instances of fileSearch.c in order to search multiple files
+for a user provided key word. When te user enters an non-alphabetic character,
+this program will kill all instances of fileSearch.c and close.
 *******************************************************************************/
 /*Standard Includes*/
 #include <stdio.h>
