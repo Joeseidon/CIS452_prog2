@@ -149,7 +149,7 @@ int main(int argc, char *argv[]){
 				int count=0;
 				read(pvc[j][1][0],&count,sizeof(int));
 				printf("Process %i sent back: %i\n",j,count);
-				searchCount[i]=count;
+				searchCount[j]=count;
 			}
 			summerizeResults();
 		}
@@ -159,7 +159,7 @@ int main(int argc, char *argv[]){
 
 void summerizeResults(void){
 	int x;
-	int total;
+	int total = 0;
 	for(x=0; x<numProcessesNeeded; x++){
 		total+=searchCount[x];
 	}
