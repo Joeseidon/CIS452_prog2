@@ -112,9 +112,6 @@ char *strlwr(char *str)
 }
 
 void exitHandler(int sigNum){
-	//Clean Up
-	if(target != NULL)
-		fclose(target);
 	
 	fprintf(stdout,"Exiting Child: %d\n",getpid());
 	
