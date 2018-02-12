@@ -70,40 +70,28 @@ int main(int argc, char *argv[]){
 
 	//close file collection
 	fclose(collection);
-	//printf("Collection closed.\n");
 	
 	//determine number of children 
 	numProcessesNeeded=i;
 	
 	/* MOVED TO GLOBAL FOR NOW. NEEDS DYNAMIC MEMEORY ALLOCATION*/
 		/*ANYTHING WITH numProcessesNeeded should be dynamicly allocated not globally declared */
-	//int pvc[numProcessesNeeded][2][2];
-	//int process_active[numProcessesNeeded];
-	
+		
 	printf("Found %i files to search in collection\n",numProcessesNeeded);
 	
 	//define pipes
 	for(i=0; i<numProcessesNeeded; i++){
-		//printf("Up and Down stream pipes %i created.\n",i);
 		pipe(pvc[i][0]);
 		pipe(pvc[i][1]);
 	}
 	
 	while(main_run){
 		pid_t pids[10];
-		int i,k=0;
+		int i;
 
 		/* Create Child Processes */
 		for (i = 0; i < numProcessesNeeded; i++) 
 		{
-			//set up parent side of pipe[i]
-			//close(pvc[i][0][0]);	//Child out parent in
-			//close(pvc[i][1][1]);	//Parent out Child in
-			
-			
-			// //set up child side of pipe[i]
-			// close(pvc[i][0][0]);	//Child out parent in
-			// close(pvc[i][1][1]);	//Parent out Child in
 			char upstream[CHAR_BUFFER_LENGTH],downstream[CHAR_BUFFER_LENGTH];
 			sprintf(upstream,"%d",pvc[i][1][1]);
 			sprintf(downstream,"%d",pvc[i][0][0]);
@@ -120,8 +108,6 @@ int main(int argc, char *argv[]){
 			}
 			else if (pids[i] == 0) 
 			{
-				// dup2(pvc[i][1][1],fileno(stdout));
-				// dup2(pvc[i][0][0],fileno(stdin));
 				//Child Process
 				printf("Child %i created.\n",i);
 				
@@ -134,34 +120,26 @@ int main(int argc, char *argv[]){
 
 		}
 		/*Parent Work Space*/
-		//printf("Parent Process: Work Space Reached\n");
 		
 		/*Assign close Signal to parent only*/
 		signal (SIGINT, exitHandler);
 		
 		while(main_run){
-			/* Wait for child processes to signal waiting */
-			//waitForChildProcesses();
 			/* Wait for search string */
 			waitForInstructions();
 			/* pass search string to child processes with search string */
 			 int j = 0;
 			 char tmp[CHAR_BUFFER_LENGTH];
 			 for(j=0; j<numProcessesNeeded; j++){
-				 
-				 //dup2(pvc[j][0][1],fileno(stdout));
 				 strcpy(tmp,searchFiles[j]);
 				 strcpy(tmp,strcat(strcat(tmp,","),searchString));
 				 printf("Sending data(%s) to process %i\n",tmp,j);
-				 //fprintf(stdout,"%s",strcat(strcat(tmp,","),searchString));
 				 write(pvc[j][0][1],tmp,sizeof(tmp));
 			 }
 			/* Get search responses from pipes */
 			for(j=0; j<numProcessesNeeded; j++){
 				printf("Waiting for Search Results...\n");
 				int count=0;
-				//dup2(pvc[j][1][0],fileno(stdin));
-				//fscanf(stdin,"%i",&count);
 				read(pvc[j][1][0],&count,sizeof(int));
 				printf("Process %i sent back: %i\n",j,count);
 			}
@@ -169,28 +147,12 @@ int main(int argc, char *argv[]){
 	}		
 	return 0;
 }
-/*void waitForChildProcesses(void){
-	printf("Waiting For Children...\n");
-	int readyFlag=0,j;
-	for(j=0; j<numProcessesNeeded; j++){
-		dup2(pvc[j][1][0],fileno(stdin));
-		while(readyFlag != 7){
-			flush();
-			//fscanf(stdin,"%i",&readyFlag);
-			read(fileno(stdin),&readyFlag,sizeof(int));
-			printf("Ready Flag Recieved: %i",readyFlag);
-		}
-		readyFlag=0;
-	}
-}*/
+
 void waitForInstructions(void){
-	int i;
-	// dup2(0,fileno(stdout));
-	// dup2(1,fileno(stdin));
 	printf("\nEnter Search String: ");
-	//fscanf(stdin, "%256[^\n]", searchString);
+
 	fgets(searchString,CHAR_BUFFER_LENGTH,stdin);
-	//flush();
+
 	printf("Search String: %s",searchString);
 	
 	/*Remove trailing '\n' if it exists*/
