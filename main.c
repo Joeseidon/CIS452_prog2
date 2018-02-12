@@ -130,12 +130,12 @@ int main(int argc, char *argv[]){
 			 for(j=0; j<numProcessesNeeded; j++){
 				 strcpy(tmp,searchFiles[j]);
 				 strcpy(tmp,strcat(strcat(tmp,","),searchString));
-				 printf("Sending data(%s) to process %i\n",tmp,j);
+				 //printf("Sending data(%s) to process %i\n",tmp,j);
 				 write(pvc[j][0][1],tmp,sizeof(tmp));
 			 }
 			/* Get search responses from pipes */
 			for(j=0; j<numProcessesNeeded; j++){
-				printf("Waiting for Search Results...\n");
+				printf("Waiting for Search Results From Process %d...\n",j);
 				int count=0;
 				read(pvc[j][1][0],&count,sizeof(int));
 				printf("Process %i sent back: %i\n",j,count);
