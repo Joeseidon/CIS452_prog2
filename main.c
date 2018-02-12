@@ -28,6 +28,7 @@ void flush(void);
 void exitHandler(int sigNum);
 void waitForInstructions(void);
 void waitForChildProcesses(void);
+void summerizeResults(void);
 
 /*Global Variables*/
 FILE* collection;											//User provided file containing search file names
@@ -42,6 +43,8 @@ int main_run = 1;											//Should main process remain running
 int pvc[MAX_CHILDREN][2][2];								//Up and down stream pipes for parent <-> child communication
 
 pid_t childpids[10];										//Child process pids
+
+int searchCount[MAX_CHILDREN];								//Count return from each search
 
 int main(int argc, char *argv[]){
 	//prompt user for file which contains the files names to search
@@ -122,6 +125,7 @@ int main(int argc, char *argv[]){
 			
 		}
 		/*Parent Work Space*/
+		printf("%d fileSearch instances created.\n",numProcessesNeeded);
 		
 		/*Assign close Signal to parent only*/
 		signal (SIGINT, exitHandler);
@@ -135,6 +139,7 @@ int main(int argc, char *argv[]){
 			 for(j=0; j<numProcessesNeeded; j++){
 				 strcpy(tmp,searchFiles[j]);
 				 strcpy(tmp,strcat(strcat(tmp,","),searchString));
+				 printf("Sent search criteria to child: %ld\n", (long)childpids[j]);
 				 write(pvc[j][0][1],tmp,sizeof(tmp));
 			 }
 			/* Get search responses from pipes */
@@ -143,10 +148,21 @@ int main(int argc, char *argv[]){
 				int count=0;
 				read(pvc[j][1][0],&count,sizeof(int));
 				printf("Process %i sent back: %i\n",j,count);
+				searchCount[i]=count;
 			}
+			summerizeResults();
 		}
 	}		
 	return 0;
+}
+
+void summerizeResults(void){
+	int x;
+	int total;
+	for(x=0; x<numProcessesNeeded; x++){
+		total+=searchCount[x];
+	}
+	printf("We Found, %s, %d times in the provided files.\n",searchString,total);
 }
 
 void waitForInstructions(void){
