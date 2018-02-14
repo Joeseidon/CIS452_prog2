@@ -126,8 +126,6 @@ char *strlwr(char *str)
 	return str;
 }
 
-void exitHandler(int sigNum){
-	//remain_active=0; //exits main while loop
-	
+void exitHandler(int sigNum){	
 	exit(0);
 }
