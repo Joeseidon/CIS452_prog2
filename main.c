@@ -141,9 +141,12 @@ int main(int argc, char *argv[]){
 			
 		}
 		/*Parent Work Space*/
-		printf("\nParent, PID: %ld, created %d fileSearch instances:\n",(long)getpid(),numProcessesNeeded);
+		printf("\nParent, PID: %ld, created %d fileSearch instances:\n"
+					,(long)getpid(),numProcessesNeeded);
+				
 		for(i=0; i<numProcessesNeeded; i++){
-			printf("\tThe parent of child %ld is %ld\n",(long)childpids[i],(long)getpid());
+			printf("\tThe parent of child %ld is %ld\n"
+						,(long)childpids[i],(long)getpid());
 		}
 		printf("\n");
 		
@@ -157,7 +160,8 @@ int main(int argc, char *argv[]){
 				 strcpy(tmp,searchFiles[j]);
 				 strcpy(tmp,strcat(strcat(tmp,","),searchString));
 				 write(pvc[j][0][1],tmp,sizeof(tmp));
-				 printf("Sent search criteria to child: %ld\n", (long)childpids[j]);
+				 printf("Sent search criteria to child: %ld\n"
+						, (long)childpids[j]);
 			 }
 			 printf("\n");
 			/* Get search responses from pipes */
@@ -210,7 +214,8 @@ void exitHandler(int sigNum){
 		kill(childpids[i],SIGUSR1);
 		/*Wait for process to return*/
 		childPid = wait(&status);
-		printf("Child %ld, exited with status = %d.\n", (long)childPid, WEXITSTATUS(status));
+		printf("Child %ld, exited with status = %d.\n"
+				,(long)childPid, WEXITSTATUS(status));
 		
 		//Close Pipes
 		close(pvc[i][0][0]);
