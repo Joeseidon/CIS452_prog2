@@ -231,7 +231,6 @@ void exitHandler(void){
 		close(pvc[i][1][1]);
 	}
 	main_run = 0;
-	//raise(SIGQUIT);
 }
 void flush(void)
 {
