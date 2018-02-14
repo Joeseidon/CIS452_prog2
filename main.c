@@ -31,20 +31,36 @@ void waitForChildProcesses(void);
 void summerizeResults(void);
 
 /*Global Variables*/
-FILE* collection;											//User provided file containing search file names
-char searchFiles[MAX_CHILDREN][CHAR_BUFFER_LENGTH];			//Search file names read from collection
-char collection_filename[CHAR_BUFFER_LENGTH];				//User provided file name containing search file names
-char searchString[CHAR_BUFFER_LENGTH];						//Users provided key word to search for
-int childProcessesCreated = 0;								//Number of child processes that have been created
-int numProcessesNeeded = 0;									//Number of processes needed based on number of search files
 
-int main_run = 1;											//Should main process remain running
+//User provided file containing search file names
+FILE* collection;		
+			
+//Search file names read from collection			
+char searchFiles[MAX_CHILDREN][CHAR_BUFFER_LENGTH];
 
-int pvc[MAX_CHILDREN][2][2];								//Up and down stream pipes for parent <-> child communication
+//User provided file name containing search file names		
+char collection_filename[CHAR_BUFFER_LENGTH];		
 
-pid_t childpids[10];										//Child process pids
+//Users provided key word to search for	
+char searchString[CHAR_BUFFER_LENGTH];
 
-int searchCount[MAX_CHILDREN];								//Count return from each search
+//Number of child processes that have been created					
+int childProcessesCreated = 0;	
+
+//Number of processes needed based on number of search files						
+int numProcessesNeeded = 0;		
+
+//Should main process remain running						
+int main_run = 1;			
+
+//Up and down stream pipes for parent <-> child communication							
+int pvc[MAX_CHILDREN][2][2];		
+
+//Child process pids					
+pid_t childpids[10];				
+
+//Count return from each search					
+int searchCount[MAX_CHILDREN];							
 
 int main(int argc, char *argv[]){
 	//prompt user for file which contains the files names to search
@@ -125,7 +141,10 @@ int main(int argc, char *argv[]){
 			
 		}
 		/*Parent Work Space*/
-		printf("%d fileSearch instances created.\n",numProcessesNeeded);
+		printf("Parent, PID: %ld, created %d fileSearch instances:\n",(long)getpid(),numProcessesNeeded);
+		for(i=0; i<numProcessesNeeded; i++){
+			printf("\tThe parent of child %ld is %ld",(long)childpids[i],(long)getpid());
+		}
 		
 		/*Assign close Signal to parent only*/
 		signal (SIGINT, exitHandler);
