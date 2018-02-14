@@ -25,7 +25,7 @@ this program will kill all instances of fileSearch.c and close.
 
 /*Function Prototypes*/
 void flush(void);
-void exitHandler(int sigNum);
+void exitHandler(void);
 void waitForInstructions(void);
 void waitForChildProcesses(void);
 void summerizeResults(void);
@@ -193,7 +193,7 @@ void waitForInstructions(void){
 	fgets(searchString,CHAR_BUFFER_LENGTH,stdin);
 	
 	if(!isalpha(searchString[0])){
-		raise(SIGINT);
+		exitHandler();
 	}
 	
 	/*Remove trailing '\n' if it exists*/
@@ -202,7 +202,7 @@ void waitForInstructions(void){
 	}
 	printf("\n");
 }
-void exitHandler(int sigNum){
+void exitHandler(void){
 	printf("\nShutdown sequence:\n");
 	
 	//wait for children
