@@ -141,11 +141,11 @@ int main(int argc, char *argv[]){
 			
 		}
 		/*Parent Work Space*/
-		printf("Parent, PID: %ld, created %d fileSearch instances:\n",(long)getpid(),numProcessesNeeded);
+		printf("\nParent, PID: %ld, created %d fileSearch instances:\n",(long)getpid(),numProcessesNeeded);
 		for(i=0; i<numProcessesNeeded; i++){
-			printf("\tThe parent of child %ld is %ld",(long)childpids[i],(long)getpid());
+			printf("\tThe parent of child %ld is %ld\n",(long)childpids[i],(long)getpid());
 		}
-		
+		printf("\n");
 		/*Assign close Signal to parent only*/
 		signal (SIGINT, exitHandler);
 		
@@ -182,7 +182,7 @@ void summerizeResults(void){
 	for(x=0; x<numProcessesNeeded; x++){
 		total+=searchCount[x];
 	}
-	printf("\nWe Found, %s, %d times in the provided files.\n",searchString,total);
+	printf("\nWe found your word (%s), %d times in the provided files.\n",searchString,total);
 }
 
 void waitForInstructions(void){
