@@ -147,9 +147,6 @@ int main(int argc, char *argv[]){
 		}
 		printf("\n");
 		
-		/*Assign close Signal to parent only*/
-		//signal (SIGINT, exitHandler);
-		
 		while(main_run){
 			/* Wait for search string */
 			waitForInstructions();
