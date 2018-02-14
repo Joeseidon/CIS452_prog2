@@ -146,8 +146,9 @@ int main(int argc, char *argv[]){
 			printf("\tThe parent of child %ld is %ld\n",(long)childpids[i],(long)getpid());
 		}
 		printf("\n");
+		
 		/*Assign close Signal to parent only*/
-		signal (SIGINT, exitHandler);
+		//signal (SIGINT, exitHandler);
 		
 		while(main_run){
 			/* Wait for search string */
