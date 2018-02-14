@@ -127,10 +127,7 @@ char *strlwr(char *str)
 }
 
 void exitHandler(int sigNum){
-	
-	//fprintf(stdout,"Exiting Child: %d\n",getpid());
-	
-	remain_active=0; //exits main while loop
+	//remain_active=0; //exits main while loop
 	
 	exit(0);
 }
