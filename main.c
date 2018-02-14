@@ -137,6 +137,11 @@ int main(int argc, char *argv[]){
 				//Add child pids to storage area of later signal use
 				childpids[k]=pids[i];
 				k++;
+				
+				//Close parents write side of the child's upstream pipe
+				close(pvc[i][1][1]);
+				//Close parent's read side of the child's downstream pipe
+				close(pvc[i][0][0]);
 			}
 			
 		}
@@ -218,9 +223,9 @@ void exitHandler(void){
 				,(long)childPid, WEXITSTATUS(status));
 		
 		//Close Pipes
-		close(pvc[i][0][0]);
+		//close(pvc[i][0][0]);
 		close(pvc[i][0][1]);
-		close(pvc[i][1][0]);
+		//close(pvc[i][1][0]);
 		close(pvc[i][1][1]);
 	}
 	main_run = 0;
