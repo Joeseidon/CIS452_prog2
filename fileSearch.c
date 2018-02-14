@@ -31,11 +31,21 @@ void waitForInstructions(void);
 void reportFindings(void);
 
 /*Global Variables*/
-int numberOfMatches = 0;										//Number of word matches found in file
-int searchComplete = 0;											//Indicates search process has completed
-int remain_active=1;											//Should main loop remain active
-char *filename, *searchWord, parentMSG[CHAR_BUFFER_LENGTH];		//Parent message and temp strings for parsing 
-FILE *target;													//Target search file
+
+//Number of word matches found in file
+int numberOfMatches = 0;
+
+//Indicates search process has completed										
+int searchComplete = 0;		
+
+//Should main loop remain active									
+int remain_active=1;				
+
+//Parent message and temp strings for parsing 							
+char *filename, *searchWord, parentMSG[CHAR_BUFFER_LENGTH];		
+
+//Target search file
+FILE *target;													
 
 int main(int argc, char *argv[]){
 	/* Assign Signal Handler For Exit */ 
@@ -118,7 +128,7 @@ char *strlwr(char *str)
 
 void exitHandler(int sigNum){
 	
-	fprintf(stdout,"Exiting Child: %d\n",getpid());
+	//fprintf(stdout,"Exiting Child: %d\n",getpid());
 	
 	remain_active=0; //exits main while loop
 	
