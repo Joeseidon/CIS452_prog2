@@ -158,8 +158,8 @@ int main(int argc, char *argv[]){
 			 for(j=0; j<numProcessesNeeded; j++){
 				 strcpy(tmp,searchFiles[j]);
 				 strcpy(tmp,strcat(strcat(tmp,","),searchString));
-				 printf("Sent search criteria to child: %ld\n", (long)childpids[j]);
 				 write(pvc[j][0][1],tmp,sizeof(tmp));
+				 printf("Sent search criteria to child: %ld\n", (long)childpids[j]);
 			 }
 			 printf("\n");
 			/* Get search responses from pipes */
