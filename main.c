@@ -222,10 +222,8 @@ void exitHandler(void){
 		printf("Child %ld, exited with status = %d.\n"
 				,(long)childPid, WEXITSTATUS(status));
 		
-		//Close Pipes
-		//close(pvc[i][0][0]);
+		//Close parent's open ends of the pipes
 		close(pvc[i][0][1]);
-		//close(pvc[i][1][0]);
 		close(pvc[i][1][1]);
 	}
 	main_run = 0;

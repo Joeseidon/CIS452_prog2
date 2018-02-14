@@ -127,5 +127,8 @@ char *strlwr(char *str)
 }
 
 void exitHandler(int sigNum){	
+	//Close child's ends of the pipes 
+	close(fileno(stdin));
+	close(fileno(stdout));
 	exit(0);
 }
