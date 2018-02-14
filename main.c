@@ -155,9 +155,10 @@ int main(int argc, char *argv[]){
 		}
 		printf("\n");
 		
+		/* Wait for first search string */
+		waitForInstructions();
+			
 		while(main_run){
-			/* Wait for search string */
-			waitForInstructions();
 			/* Pass search file to child processes with search string */
 			 int j = 0;
 			 char tmp[CHAR_BUFFER_LENGTH];
@@ -178,6 +179,9 @@ int main(int argc, char *argv[]){
 				searchCount[j]=count;
 			}
 			summerizeResults();
+			
+			/* Wait for next search string */
+			waitForInstructions();
 		}
 	}		
 	return 0;
